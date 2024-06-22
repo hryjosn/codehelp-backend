@@ -23,6 +23,7 @@ export default [
         "error",
         {
           endOfLine: "auto",
+          semi: false,
         },
       ],
       "@typescript-eslint/no-unused-vars": "error",
