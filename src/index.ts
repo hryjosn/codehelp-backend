@@ -1,24 +1,64 @@
-import "dotenv/config";
-import express from "express";
-import http from "http";
-import { Server } from "socket.io";
+import "dotenv/config"
+import express, { Express, Request, Response } from "express"
+import http from "http"
+import { Server } from "socket.io"
+import { DataSource } from "typeorm"
+import userRouter from "./user/user.router"
+import cors from "cors"
+import bodyParser from "body-parser"
+import { ValidationError } from "express-validation"
+import { User } from "./entities/User"
 
-const app = express();
-const server = http.createServer(app);
-const port = process.env.PORT || 3000;
+export const createServer = async () => {
+  const appDataSource = new DataSource({
+    type: "postgres",
+    name: process.env.DB_USER,
+    url: process.env.DB_URL,
+    database: process.env.DB,
+    password: process.env.DB_PWD,
+    port: 5432,
+    synchronize: true,
+    entities: [User],
+    extra: {
+      max: 1,
+    },
+  })
 
-const io = new Server(server);
+  await appDataSource.initialize()
+  const app: Express = express()
+  app.use(cors())
+  app.use(bodyParser.json())
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    }),
+  )
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+  app.use("/", [userRouter])
 
-io.on("connection", (socket) => {
-  console.log(socket);
+  app.use((err: ValidationError, req: Request, res: Response) => {
+    if (err) {
+      return res.status(err.statusCode).json(err)
+    }
+    return res.status(500).json(err)
+  })
+  return app
+}
 
-  console.log("connecting");
-});
+const init = async () => {
+  const server = await createServer()
+  const serverForSocket = http.createServer(server)
+  const io = new Server(serverForSocket)
+  io.on("connection", (socket) => {
+    console.log("connect")
 
-server.listen(port, () => {
-  console.log(`listening on *:${port}`);
-});
+    socket.on("disconnect", () => {
+      console.log("user disconnect")
+    })
+  })
+  const port = process.env.PORT
+  serverForSocket.listen(Number(port) || 3000, () => {
+    console.log(`App running on port ${Number(port) || 3000}.`)
+  })
+}
+export default init()
