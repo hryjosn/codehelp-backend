@@ -12,7 +12,7 @@ export default class UserModel {
     return newUserData
   }
 
-  findOne({ userName, email }: { userName: string; email: string }) {
+  findOne({ userName, email }: { userName?: string; email?: string }) {
     return User.findOne({
       where: [{ user_name: userName }, { email }],
     })

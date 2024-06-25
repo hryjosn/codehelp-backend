@@ -50,3 +50,48 @@ export const signUp: IApi = async (req, res) => {
     throw error
   }
 }
+
+export const login: IApi = async (req, res) => {
+  try {
+    const { userName, password } = req.body
+    const user = await findOne({ userName })
+
+    if (!user) {
+      return res.status(403).send({
+        code: RESPONSE_CODE.USER_DATA_ERROR,
+        status: "error",
+        message: "User's name or password is not correct",
+      })
+    }
+    const isPasswordCorrect = await bcrypt.compare(password, user.password!)
+
+    if (!isPasswordCorrect) {
+      return res.status(403).send({
+        code: RESPONSE_CODE.USER_DATA_ERROR,
+        status: "error",
+        message: "User Name or password is not correct",
+      })
+    }
+    const token =
+      "Bearer " +
+      jwt.sign(
+        { user_name: userName, _id: user.id },
+        String(process.env.TOKEN),
+        { expiresIn: "30 day" },
+      )
+
+    return res.status(200).send({
+      status: "user_login",
+      msg: "Login successful",
+      token,
+      id: user.id,
+      email: user.email,
+    })
+  } catch (error) {
+    res.status(500).send({
+      code: RESPONSE_CODE.UNKNOWN_ERROR,
+      message: error,
+    })
+    throw error
+  }
+}
