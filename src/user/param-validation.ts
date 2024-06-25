@@ -18,6 +18,7 @@ export default {
         "any.required": "{{#key}} is a required field",
       }),
       avatar: Joi.string().required().max(254),
+      phoneNumber: Joi.string().required().max(20),
     }),
   }),
 

@@ -3,4 +3,5 @@ export interface ISignUp {
   password: string
   email: string
   avatar: string
+  phoneNumber: string
 }
