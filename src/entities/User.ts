@@ -24,6 +24,9 @@ export class User extends BaseEntity {
   @Column("varchar", { length: 150 })
   avatar: string
 
+  @Column("varchar", { length: 20 })
+  phoneNumber: string
+
   @Column({ default: false })
   verify: boolean
 
