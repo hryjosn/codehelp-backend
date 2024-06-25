@@ -20,4 +20,16 @@ export default {
       avatar: Joi.string().required().max(254),
     }),
   }),
+
+  login: Joi.object({
+    body: Joi.object().keys({
+      userName: Joi.string()
+        .regex(/^[\w](?!.*?\.{2})[\w.]{1,28}[\w]$/)
+        .required()
+        .min(5)
+        .max(30)
+        .lowercase(),
+      password: Joi.string().min(8).max(30).required(),
+    }),
+  }),
 }
