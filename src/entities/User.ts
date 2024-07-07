@@ -26,11 +26,11 @@ export class User extends BaseEntity {
   email: string
 
   @OneToOne(() => MentorInfo, (mentor_info) => mentor_info.user)
-  @JoinColumn()
+  @JoinColumn({ name: "mentor_info_id" })
   mentor_info: MentorInfo
 
   @OneToOne(() => MemberInfo, (member_info) => member_info.user)
-  @JoinColumn()
+  @JoinColumn({ name: "member_info_id" })
   member_info: MemberInfo
 
   @Column("varchar", { length: 150, nullable: false })
@@ -52,7 +52,7 @@ export class User extends BaseEntity {
   phone_number: string
 
   @Column({ default: false })
-  emailOTP: boolean
+  email_otp: boolean
 
   @Column("varchar", { length: 500, nullable: false })
   introduction: string
