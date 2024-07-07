@@ -26,7 +26,7 @@ export class User extends BaseEntity {
   email: string
 
   @OneToOne(() => MentorInfo, (mentor_info) => mentor_info.user)
-  @JoinColumn({ name: "memtor_info_id" })
+  @JoinColumn({ name: "mentor_info_id" })
   mentor_info: MentorInfo
 
   @OneToOne(() => MemberInfo, (member_info) => member_info.user)
