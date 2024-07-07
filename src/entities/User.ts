@@ -54,6 +54,9 @@ export class User extends BaseEntity {
   @Column({ default: false })
   emailOTP: boolean
 
+  @Column("varchar", { length: 500, nullable: false })
+  introduction: string
+
   @CreateDateColumn()
   created_at: Date
 
