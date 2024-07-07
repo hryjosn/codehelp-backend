@@ -8,7 +8,7 @@ export default class UserModel {
     newUser.password = password
     newUser.email = email
     newUser.avatar = avatar
-    newUser.phoneNumber = phoneNumber
+    newUser.phone_number = phoneNumber
     const newUserData = await newUser.save()
     return newUserData
   }

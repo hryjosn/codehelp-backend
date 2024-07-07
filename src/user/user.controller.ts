@@ -86,7 +86,7 @@ export const login: IApi = async (req, res) => {
       token,
       id: user.id,
       email: user.email,
-      phoneNumber: user.phoneNumber,
+      phoneNumber: user.phone_number,
     })
   } catch (error) {
     res.status(500).send({
