@@ -19,7 +19,7 @@ export class MentorInfo extends BaseEntity {
   years_of_experience: string
 
   @Column("varchar", { length: 257, nullable: false })
-  linked: string
+  linked_url: string
 
   @Column("varchar", { length: 100, nullable: false })
   primary_expertise: string
@@ -37,5 +37,5 @@ export class MentorInfo extends BaseEntity {
   skills: string[]
 
   @Column("jsonb", { nullable: false })
-  lines: string[]
+  tools: string[]
 }

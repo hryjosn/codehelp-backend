@@ -16,7 +16,7 @@ export class MemberInfo extends BaseEntity {
   user: User
 
   @Column("varchar", { length: 30, nullable: false })
-  level: string
+  level_of_experience: string
 
   @Column("jsonb", { nullable: false })
   field_of_work: string[]
