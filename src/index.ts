@@ -8,7 +8,7 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
 import { User } from "./entities/User"
-import { MemberInfo } from "./entities/memberInfo"
+import { MemberInfo } from "./entities/MemberInfo"
 import { MentorInfo } from "./entities/MentorInfo"
 
 export const createServer = async () => {
@@ -30,14 +30,12 @@ export const createServer = async () => {
   const app: Express = express()
   app.use(cors())
   app.use(bodyParser.json())
-  app.use(
-    bodyParser.urlencoded({
-      extended: true,
-    }),
-  )
+  app.use(bodyParser.urlencoded({ extended: true }))
 
   app.use("/", [userRouter])
-
+  app.use((req: Request) => {
+    console.log("index", req.body)
+  })
   app.use((err: ValidationError, req: Request, res: Response) => {
     if (err) {
       return res.status(err.statusCode).json(err)

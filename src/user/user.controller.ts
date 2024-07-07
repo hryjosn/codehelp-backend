@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 import UserModel from "./user.model"
 import { RESPONSE_CODE } from "../types"
+import { generateToken } from "../utils/account"
 
 const { addOne, findOne } = new UserModel()
 
@@ -10,37 +11,70 @@ interface IApi {
   (req: Request, res: Response): void
 }
 
-export const signUp: IApi = async (req, res) => {
+export const mentorSignUp: IApi = async (req, res) => {
   try {
-    const { password } = req.body
-    // const isUserExist = await findOne({ email })
+    const { password, email } = req.body
 
-    // if (isUserExist) {
-    //   return res.status(403).send({
-    //     code: RESPONSE_CODE.USER_DATA_ERROR,
-    //     status: "error",
-    //     message: `Please Check your information. userName: ${userName}, or email: ${email} may be registered`,
-    //   })
-    // }
+    const isEmailExist = await findOne({ email })
+
+    if (isEmailExist) {
+      return res.status(403).send({
+        code: RESPONSE_CODE.USER_DATA_ERROR,
+        status: "error",
+        message: `Email ${email} registered!`,
+      })
+    }
 
     const encryptedPassword = await bcrypt.hash(password, 10)
-    const newUser = await addOne({
+    const newMentor = await addOne({
       ...req.body,
       password: encryptedPassword,
     })
-    const token =
-      "Bearer " +
-      jwt.sign(
-        { user_name: newUser.user_name, email: newUser.email, _id: newUser.id },
-        String(process.env.TOKEN),
-        { expiresIn: "30 day" },
-      )
+
+    const token = generateToken(newMentor)
+
     return res.status(200).send({
-      id: newUser.id,
+      newMentor,
       status: "ok",
-      message: `${newUser.user_name} sign up successful!`,
+      message: `${newMentor.user_name} sign up successful!`,
       token,
-      email: newUser.email,
+    })
+  } catch (error) {
+    res.status(500).send({
+      code: RESPONSE_CODE.UNKNOWN_ERROR,
+      message: error,
+    })
+
+    throw error
+  }
+}
+
+export const memberSignUp: IApi = async (req, res) => {
+  try {
+    const { password, email } = req.body
+
+    const isEmailExist = await findOne({ email })
+
+    if (isEmailExist) {
+      return res.status(403).send({
+        code: RESPONSE_CODE.USER_DATA_ERROR,
+        status: "error",
+        message: `Email ${email} registered!`,
+      })
+    }
+
+    const encryptedPassword = await bcrypt.hash(password, 10)
+    const newMember = await addOne({
+      ...req.body,
+      password: encryptedPassword,
+    })
+    const token = generateToken(newMember)
+
+    return res.status(200).send({
+      newMember,
+      status: "ok",
+      message: `${newMember.user_name} sign up successful!`,
+      token,
     })
   } catch (error) {
     res.status(500).send({

@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { MentorInfo } from "./MentorInfo"
-import { MemberInfo } from "./memberInfo"
+import { MemberInfo } from "./MemberInfo"
 
 @Entity("user")
 export class User extends BaseEntity {
