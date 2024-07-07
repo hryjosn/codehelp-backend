@@ -49,7 +49,7 @@ export const mentorSignUpSchema = Joi.object({
 
 export const memberSignUpSchema = Joi.object({
   body: Joi.object().keys({
-    userName: Joi.string().required().min(5).max(30).lowercase(),
+    userName: Joi.string().required().min(3).max(30).lowercase(),
     password: Joi.string().min(8).max(30).required(),
     email: Joi.string().email().trim().required().max(254).messages({
       "string.base": "{{#key}} should be a type of email",
