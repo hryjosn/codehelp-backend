@@ -12,35 +12,35 @@ interface IApi {
 
 export const signUp: IApi = async (req, res) => {
   try {
-    const { userName, email, password } = req.body
-    const isUserExist = await findOne({ userName, email })
+    const { password } = req.body
+    // const isUserExist = await findOne({ email })
 
-    if (isUserExist) {
-      return res.status(403).send({
-        code: RESPONSE_CODE.USER_DATA_ERROR,
-        status: "error",
-        message: `Please Check your information. userName: ${userName}, or email: ${email} may be registered`,
-      })
-    }
+    // if (isUserExist) {
+    //   return res.status(403).send({
+    //     code: RESPONSE_CODE.USER_DATA_ERROR,
+    //     status: "error",
+    //     message: `Please Check your information. userName: ${userName}, or email: ${email} may be registered`,
+    //   })
+    // }
 
     const encryptedPassword = await bcrypt.hash(password, 10)
-    const newGuest = await addOne({
+    const newUser = await addOne({
       ...req.body,
       password: encryptedPassword,
     })
     const token =
       "Bearer " +
       jwt.sign(
-        { user_name: newGuest.user_name, _id: newGuest.id },
+        { user_name: newUser.user_name, email: newUser.email, _id: newUser.id },
         String(process.env.TOKEN),
         { expiresIn: "30 day" },
       )
     return res.status(200).send({
-      id: newGuest.id,
+      id: newUser.id,
       status: "ok",
-      message: `${newGuest.user_name} sign up successful!`,
+      message: `${newUser.user_name} sign up successful!`,
       token,
-      email: newGuest.email,
+      email: newUser.email,
     })
   } catch (error) {
     res.status(500).send({
