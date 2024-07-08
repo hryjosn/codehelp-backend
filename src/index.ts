@@ -8,6 +8,8 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
 import { User } from "./entities/User"
+import { MemberInfo } from "./entities/memberInfo"
+import { MentorInfo } from "./entities/MentorInfo"
 
 export const createServer = async () => {
   const appDataSource = new DataSource({
@@ -18,7 +20,7 @@ export const createServer = async () => {
     password: process.env.DB_PWD,
     port: 5432,
     synchronize: true,
-    entities: [User],
+    entities: [User, MemberInfo, MentorInfo],
     extra: {
       max: 1,
     },
