@@ -2,37 +2,20 @@ import "dotenv/config"
 import express, { Express, Request, Response } from "express"
 import http from "http"
 import { Server } from "socket.io"
-import { DataSource } from "typeorm"
-import userRouter from "./user/user.router"
+import dataSource from "./db/dataSource"
+// import userRouter from "./user/user.router"
 import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
-import { User } from "./entities/User"
-import { MemberInfo } from "./entities/MemberInfo"
-import { MentorInfo } from "./entities/MentorInfo"
 
 export const createServer = async () => {
-  const appDataSource = new DataSource({
-    type: "postgres",
-    name: process.env.DB_USER,
-    url: process.env.DB_URL,
-    database: process.env.DB,
-    password: process.env.DB_PWD,
-    port: 5432,
-    synchronize: true,
-    entities: [User, MemberInfo, MentorInfo],
-    extra: {
-      max: 1,
-    },
-  })
-
-  await appDataSource.initialize()
+  await dataSource.initialize()
   const app: Express = express()
   app.use(cors())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
-  app.use("/", [userRouter])
+  // app.use("/", [userRouter])
   app.use((req: Request) => {
     console.log("index", req.body)
   })

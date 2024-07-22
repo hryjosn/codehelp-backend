@@ -1,70 +1,62 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from "typeorm"
+import { Column, Entity, Index, JoinColumn, OneToOne } from "typeorm"
 import { MentorInfo } from "./MentorInfo"
-import { MemberInfo } from "./MemberInfo"
 
-@Entity("user")
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+@Index("user_email_key", ["email"], { unique: true })
+@Index("user_pkey", ["id"], { unique: true })
+@Entity("user", { schema: "public" })
+export class User {
+  @Column("uuid", {
+    primary: true,
+    name: "id",
+    default: () => "gen_random_uuid()",
+  })
   id: string
 
-  @Column("varchar", { length: 100, nullable: false })
-  password?: string
+  @Column("character varying", { name: "user_name", length: 30 })
+  userName: string
 
-  @Column("varchar", { length: 30, nullable: false })
-  user_name: string
-
-  @Column("varchar", { length: 254, nullable: false, unique: true })
+  @Column("character varying", { name: "email", unique: true, length: 254 })
   email: string
 
-  @OneToOne(() => MentorInfo, (mentor_info) => mentor_info.user)
-  @JoinColumn({ name: "mentor_info_id" })
-  mentor_info: MentorInfo
+  @Column("character varying", { name: "password", length: 100 })
+  password: string
 
-  @OneToOne(() => MemberInfo, (member_info) => member_info.user)
-  @JoinColumn({ name: "member_info_id" })
-  member_info: MemberInfo
-
-  @Column("varchar", { length: 150, nullable: false })
+  @Column("character varying", { name: "avatar", length: 150 })
   avatar: string
 
-  @Column("varchar", { length: 30, nullable: false })
+  @Column("character varying", { name: "gender", length: 30 })
   gender: string
 
-  @Column("varchar", { length: 30, nullable: false })
+  @Column("character varying", { name: "country", length: 30 })
   country: string
 
-  @Column("varchar", { length: 100, nullable: false })
+  @Column("character varying", { name: "title", length: 100 })
   title: string
 
-  @Column("varchar", { length: 100, nullable: false })
+  @Column("character varying", { name: "company", length: 100 })
   company: string
 
-  @Column("varchar", { length: 20, default: "" })
-  phone_number: string
+  @Column("character varying", { name: "phone_number", length: 20 })
+  phoneNumber: string
 
-  @Column({ default: false })
-  email_otp: boolean
+  @Column("boolean", { name: "email_otp", default: () => "false" })
+  emailOtp: boolean
 
-  @Column("varchar", { length: 500, nullable: false })
+  @Column("character varying", { name: "introduction", length: 500 })
   introduction: string
 
-  @CreateDateColumn()
-  created_at: Date
+  @Column("timestamp without time zone", {
+    name: "created_at",
+    default: () => "LOCALTIMESTAMP",
+  })
+  createdAt: Date
 
-  @UpdateDateColumn()
-  updated_at: Date
+  @Column("timestamp without time zone", {
+    name: "updated_at",
+    default: () => "LOCALTIMESTAMP",
+  })
+  updatedAt: Date
 
-  toJSON() {
-    delete this.password
-    return this
-  }
+  @OneToOne(() => MentorInfo, (mentorInfo) => mentorInfo.user)
+  mentorInfo: MentorInfo
 }
