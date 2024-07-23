@@ -2,20 +2,20 @@ import "dotenv/config"
 import express, { Express, Request, Response } from "express"
 import http from "http"
 import { Server } from "socket.io"
-import dataSource from "./db/dataSource"
-// import userRouter from "./user/user.router"
+import userRouter from "~/routers/user"
 import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
+import client from "./db/dbConfig"
 
 export const createServer = async () => {
-  await dataSource.initialize()
+  await client.connect()
   const app: Express = express()
   app.use(cors())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
-  // app.use("/", [userRouter])
+  app.use("/", userRouter)
   app.use((req: Request) => {
     console.log("index", req.body)
   })
@@ -40,8 +40,8 @@ const init = async () => {
     })
   })
   const port = process.env.PORT
-  serverForSocket.listen(Number(port) || 3000, () => {
-    console.log(`App running on port ${Number(port) || 3000}.`)
+  serverForSocket.listen(Number(port) || 3001, () => {
+    console.log(`App running on port ${Number(port) || 3001}.`)
   })
 }
 export default init()

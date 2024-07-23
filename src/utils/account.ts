@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
-import { User } from "../entities/User"
+import { IUserSchema } from "~/models/user/types"
 
-export const generateToken = (user: User) => {
+export const generateToken = (user: IUserSchema) => {
   return (
     "Bearer " +
     jwt.sign(
