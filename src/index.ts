@@ -6,10 +6,10 @@ import userRouter from "~/routers/user"
 import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
-import client from "./db/dbConfig"
+import dataSource from "./db/dataSource"
 
 export const createServer = async () => {
-  await client.connect()
+  await dataSource.initialize()
   const app: Express = express()
   app.use(cors())
   app.use(bodyParser.json())
