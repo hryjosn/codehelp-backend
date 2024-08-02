@@ -23,9 +23,3 @@ export enum LEVEL_OF_EXPERIENCE {
   Executive = 5,
   Founder = 6,
 }
-
-export enum GENDER {
-  MALE = "m",
-  FEMALE = "f",
-  UNKNOWN = "n",
-}

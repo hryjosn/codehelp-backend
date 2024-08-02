@@ -10,8 +10,8 @@ export interface IMentor {
   phoneNumber: string
   emailOtp?: boolean
   introduction: string
-  yearsOfExperience: string
-  linkedURL: string
+  level: number
+  linkedInURL: string
   primaryExpertise: string
   secondaryExpertise?: string
   tertiaryExpertise?: string

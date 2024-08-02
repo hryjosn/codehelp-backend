@@ -2,11 +2,12 @@ import "dotenv/config"
 import express, { Express, Request, Response } from "express"
 import http from "http"
 import { Server } from "socket.io"
-import userRouter from "~/routers/user"
 import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
 import dataSource from "./db/dataSource"
+import mentorRouter from "~/routers/mentor"
+import memberRouter from "~/routers/member"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -15,7 +16,8 @@ export const createServer = async () => {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
-  app.use("/", userRouter)
+  app.use("/mentor", mentorRouter)
+  app.use("/member", memberRouter)
   app.use((req: Request) => {
     console.log("index", req.body)
   })

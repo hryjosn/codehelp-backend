@@ -6,3 +6,14 @@ export enum RESPONSE_CODE {
   NO_PERMISSION = "4005",
   UNKNOWN_ERROR = "5000",
 }
+
+export enum GENDER {
+  "MALE" = "m",
+  "FEMALE" = "f",
+  "UNKNOWN" = "n",
+}
+
+export interface IAccount {
+  email: string
+  password: string
+}
