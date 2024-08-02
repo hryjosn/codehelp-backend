@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken"
-import { User } from "../entities/User"
+import { Member } from "~/db/entities/Member"
+import { Mentor } from "~/db/entities/Mentor"
 
-export const generateToken = (user: User) => {
+export const generateToken = (user: Member | Mentor) => {
   return (
     "Bearer " +
     jwt.sign(
-      { user_name: user.user_name, email: user.email, _id: user.id },
+      { userName: user.userName, email: user.email, id: user.id },
       String(process.env.TOKEN),
       { expiresIn: "30 day" },
     )
