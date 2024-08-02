@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { save, login as memberLogin } from "~/features/member"
 import { RESPONSE_CODE } from "~/types"
-import HttpError from "~/utils/HttpError"
+import FeatureError from "~/utils/FeatureError"
 
 interface IApi {
   (req: Request, res: Response): void
@@ -46,7 +46,7 @@ export const signUp: IApi = async (req, res) => {
       token,
     })
   } catch (error) {
-    if (error instanceof HttpError) {
+    if (error instanceof FeatureError) {
       res.status(error.serverStatus).send({
         code: error.code,
         message: error.message,
@@ -73,7 +73,7 @@ export const login: IApi = async (req, res) => {
       member,
     })
   } catch (error) {
-    if (error instanceof HttpError) {
+    if (error instanceof FeatureError) {
       res.status(error.serverStatus).send({
         code: error.code,
         message: error.message,

@@ -4,7 +4,7 @@ import { IAccount, RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
 import { addMember, findMemberBy } from "~/models/member"
 import { Member } from "~/db/entities/Member"
-import HttpError from "~/utils/HttpError"
+import FeatureError from "~/utils/FeatureError"
 
 export const save = async (
   data: IMember,
@@ -15,7 +15,7 @@ export const save = async (
     const { email, password } = data
     const isEmailExist = await findMemberBy({ email })
     if (isEmailExist) {
-      throw new HttpError(
+      throw new FeatureError(
         403,
         RESPONSE_CODE.DATA_DUPLICATE,
         `Email: ${email} has been created`,
@@ -43,23 +43,23 @@ export const login = async ({
 }: IAccount): Promise<{ member: Member; token: string }> => {
   try {
     const member = await findMemberBy({ email })
-
     if (!member) {
-      throw new HttpError(
+      throw new FeatureError(
         403,
         RESPONSE_CODE.USER_DATA_ERROR,
         "User's name or password is not correct",
       )
     }
-    const isPasswordCorrect = await bcrypt.compare(password!, member.password!)
 
+    const isPasswordCorrect = await bcrypt.compare(password!, member.password!)
     if (!isPasswordCorrect) {
-      throw new HttpError(
+      throw new FeatureError(
         403,
         RESPONSE_CODE.USER_DATA_ERROR,
         "User's name or password is not correct",
       )
     }
+
     const token = generateToken(member)
     delete member.password
     return {
