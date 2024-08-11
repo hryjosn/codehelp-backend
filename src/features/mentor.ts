@@ -69,3 +69,20 @@ export const login = async ({
     throw error
   }
 }
+
+export const getInfo = async ({ id }: { id: string }): Promise<Mentor> => {
+  try {
+    const mentor = await findMentorBy({ id })
+
+    if (!mentor) {
+      throw new FeatureError(
+        404,
+        RESPONSE_CODE.USER_DATA_ERROR,
+        "User not found.",
+      )
+    }
+    return mentor
+  } catch (error) {
+    throw error
+  }
+}

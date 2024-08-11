@@ -10,8 +10,6 @@ export const save = async (
   data: IMember,
 ): Promise<{ newMember: Member; token: string }> => {
   try {
-    console.log("member", data)
-
     const { email, password } = data
     const isEmailExist = await findMemberBy({ email })
     if (isEmailExist) {

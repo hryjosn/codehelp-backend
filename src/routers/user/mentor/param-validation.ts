@@ -32,3 +32,9 @@ export const signUpSchema = Joi.object({
     tools: Joi.array().required().min(1),
   }),
 })
+
+export const getMentorInfoSchema = Joi.object({
+  body: Joi.object().keys({
+    id: Joi.string().uuid().required(),
+  }),
+})

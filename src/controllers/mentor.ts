@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { save, login as mentorLogin } from "~/features/mentor"
+import { save, login as mentorLogin, getInfo } from "~/features/mentor"
 import { RESPONSE_CODE } from "~/types"
 import FeatureError from "~/utils/FeatureError"
 
@@ -82,6 +82,31 @@ export const login: IApi = async (req, res) => {
       status: "mentor_login",
       msg: "Login successful",
       token,
+      mentor,
+    })
+  } catch (error) {
+    if (error instanceof FeatureError) {
+      res.status(error.serverStatus).send({
+        code: error.code,
+        message: error.message,
+      })
+    } else {
+      res.status(500).send({
+        code: RESPONSE_CODE.UNKNOWN_ERROR,
+        message: error,
+      })
+      throw error
+    }
+  }
+}
+
+export const getMentorInfo: IApi = async (req, res) => {
+  try {
+    const { id } = req.params
+    const mentor = await getInfo({ id })
+
+    return res.status(200).send({
+      status: "ok",
       mentor,
     })
   } catch (error) {
