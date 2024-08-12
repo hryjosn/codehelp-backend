@@ -55,26 +55,5 @@ export const findMentorBy = async ({
 }) => {
   return Mentor.findOne({
     where: [{ id }, { userName }, { email }],
-    select: [
-      "id",
-      "userName",
-      "email",
-      "avatar",
-      "gender",
-      "country",
-      "title",
-      "company",
-      "phoneNumber",
-      "emailOtp",
-      "introduction",
-      "level",
-      "url",
-      "primaryExpertise",
-      "secondaryExpertise",
-      "tertiaryExpertise",
-      "disciplines",
-      "skills",
-      "tools",
-    ],
   })
 }
