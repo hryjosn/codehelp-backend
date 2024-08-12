@@ -17,3 +17,8 @@ export interface IAccount {
   email: string
   password: string
 }
+
+export interface IPagination {
+  page: number
+  count: number
+}

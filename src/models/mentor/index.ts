@@ -78,3 +78,31 @@ export const findMentorBy = async ({
     ],
   })
 }
+
+export const findMany = ({ count, skip }: { count: number; skip: number }) => {
+  return Mentor.findAndCount({
+    select: [
+      "id",
+      "userName",
+      "email",
+      "avatar",
+      "gender",
+      "country",
+      "title",
+      "company",
+      "phoneNumber",
+      "emailOtp",
+      "introduction",
+      "level",
+      "url",
+      "primaryExpertise",
+      "secondaryExpertise",
+      "tertiaryExpertise",
+      "disciplines",
+      "skills",
+      "tools",
+    ],
+    take: count,
+    skip: skip,
+  })
+}

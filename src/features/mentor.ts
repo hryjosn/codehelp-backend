@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
-import { IAccount, RESPONSE_CODE } from "~/types"
+import { IAccount, IPagination, RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
-import { addMentor, findMentorBy } from "~/models/mentor"
+import { addMentor, findMany, findMentorBy } from "~/models/mentor"
 import { IMentor } from "~/models/mentor/types"
 import { Mentor } from "~/db/entities/Mentor"
 import FeatureError from "~/utils/FeatureError"
@@ -81,6 +81,20 @@ export const getInfo = async ({ id }: { id: string }): Promise<Mentor> => {
       )
     }
     return mentor
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getList = async ({
+  page,
+  count,
+}: IPagination): Promise<{ mentorList: Mentor[]; total: number }> => {
+  try {
+    const skip = (page - 1) * count
+    const [mentorList, total] = await findMany({ count, skip })
+
+    return { mentorList, total }
   } catch (error) {
     throw error
   }
