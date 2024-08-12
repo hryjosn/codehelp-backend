@@ -80,6 +80,8 @@ export const findMany = ({ count, skip }: { count: number; skip: number }) => {
       "disciplines",
       "skills",
       "tools",
+      "createdAt",
+      "updatedAt",
     ],
     take: count,
     skip: skip,
