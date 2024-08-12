@@ -60,7 +60,6 @@ export const login = async ({
     }
 
     const token = generateToken(mentor)
-    delete mentor.password
     return {
       mentor,
       token,
