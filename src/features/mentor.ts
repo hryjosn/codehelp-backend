@@ -58,6 +58,7 @@ export const login = async ({
         "User's name or password is not correct",
       )
     }
+    delete mentor.password
 
     const token = generateToken(mentor)
     return {
@@ -80,6 +81,7 @@ export const getInfo = async ({ id }: { id: string }): Promise<Mentor> => {
         "User not found.",
       )
     }
+    delete mentor.password
     return mentor
   } catch (error) {
     throw error
