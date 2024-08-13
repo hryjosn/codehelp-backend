@@ -127,7 +127,7 @@ export const getMentorInfo: IApi = async (req, res) => {
 
 export const getMentorList: IApi = async (req, res) => {
   try {
-    const { page, count } = req.params
+    const { page, count } = req.query
     const { mentorList, total } = await getList({
       page: Number(page),
       count: Number(count),
