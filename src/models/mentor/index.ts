@@ -55,6 +55,5 @@ export const findMentorBy = async ({
 }) => {
   return Mentor.findOne({
     where: [{ id }, { userName }, { email }],
-    select: { password: false },
   })
 }

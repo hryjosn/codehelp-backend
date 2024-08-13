@@ -58,13 +58,31 @@ export const login = async ({
         "User's name or password is not correct",
       )
     }
+    delete mentor.password
 
     const token = generateToken(mentor)
-    delete mentor.password
     return {
       mentor,
       token,
     }
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getInfo = async ({ id }: { id: string }): Promise<Mentor> => {
+  try {
+    const mentor = await findMentorBy({ id })
+
+    if (!mentor) {
+      throw new FeatureError(
+        404,
+        RESPONSE_CODE.USER_DATA_ERROR,
+        "User not found.",
+      )
+    }
+    delete mentor.password
+    return mentor
   } catch (error) {
     throw error
   }
