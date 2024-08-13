@@ -42,8 +42,8 @@ const init = async () => {
     })
   })
   const port = process.env.PORT
-  serverForSocket.listen(Number(port) || 3001, () => {
-    console.log(`App running on port ${Number(port) || 3001}.`)
+  serverForSocket.listen(Number(port) || 3000, () => {
+    console.log(`App running on port ${Number(port) || 3000}.`)
   })
 }
 export default init()
