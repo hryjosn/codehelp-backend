@@ -102,8 +102,8 @@ export const login: IApi = async (req, res) => {
 
 export const getMentorInfo: IApi = async (req, res) => {
   try {
-    const { id } = req.params
-    const mentor = await getInfo({ id })
+    const { id } = req.query
+    const mentor = await getInfo({ id: id!.toString() })
 
     return res.status(200).send({
       status: "ok",
