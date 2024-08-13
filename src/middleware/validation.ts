@@ -5,7 +5,7 @@ import { RESPONSE_CODE } from "../types"
 export const validation = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const { error, value } = schema.validate({
-      body: { ...req.body, ...req.files, ...req.query },
+      body: { ...req.body, ...req.files, ...req.query, ...req.params },
     })
 
     const valid = error == null

@@ -20,7 +20,7 @@ router.route("/signUp").post(
 
 router.route("/login").post(validation(accountSchema), login)
 
-router.route("").get(validation(getMentorInfoSchema), getMentorInfo)
+router.route("/info/:id").get(validation(getMentorInfoSchema), getMentorInfo)
 
 router.route("/list").get(validation(paginationSchema), getMentorList)
 export default router
