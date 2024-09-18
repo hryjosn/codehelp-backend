@@ -1,8 +1,8 @@
-import { IMember } from "~/models/member/types"
+import { IMember } from "~/Member/types"
 import bcrypt from "bcrypt"
 import { IAccount, RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
-import { addMember, findMemberBy } from "~/models/member"
+import { addMember, findMemberBy } from "./member.model"
 import { Member } from "~/db/entities/Member"
 import FeatureError from "~/utils/FeatureError"
 

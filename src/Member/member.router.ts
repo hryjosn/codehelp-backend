@@ -1,9 +1,9 @@
 import express from "express"
 
 import { validation } from "~/middleware/validation"
-import { login, signUp } from "~/controllers/member"
+import { login, signUp } from "./member.controller"
 import { signUpSchema } from "./param-validation"
-import { accountSchema } from "../common-param-validation"
+import { accountSchema } from "~/utils/common-param-validation"
 
 const router = express.Router()
 

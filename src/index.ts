@@ -6,8 +6,8 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
 import dataSource from "./db/dataSource"
-import mentorRouter from "~/routers/user/mentor"
-import memberRouter from "~/routers/user/member"
+import mentorRouter from "~/Mentor/mentor.router"
+import memberRouter from "~/Member/member.router"
 
 export const createServer = async () => {
   await dataSource.initialize()

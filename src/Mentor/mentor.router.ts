@@ -7,8 +7,11 @@ import {
   getMentorList,
   login,
   signUp,
-} from "~/controllers/mentor"
-import { accountSchema, paginationSchema } from "../common-param-validation"
+} from "./mentor.controller"
+import {
+  accountSchema,
+  paginationSchema,
+} from "~/utils/common-param-validation"
 
 const router = express.Router()
 

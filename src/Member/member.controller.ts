@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { save, login as memberLogin } from "~/features/member"
+import { save, login as memberLogin } from "./member.feature"
 import { RESPONSE_CODE } from "~/types"
 import FeatureError from "~/utils/FeatureError"
 

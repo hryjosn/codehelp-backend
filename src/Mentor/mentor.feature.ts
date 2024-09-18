@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt"
 import { IAccount, IPagination, RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
-import { addMentor, findMany, findMentorBy } from "~/models/mentor"
-import { IMentor } from "~/models/mentor/types"
+import { addMentor, findMany, findMentorBy } from "./mentor.model"
+import { IMentor } from "~/Mentor/types"
 import { Mentor } from "~/db/entities/Mentor"
 import FeatureError from "~/utils/FeatureError"
 
