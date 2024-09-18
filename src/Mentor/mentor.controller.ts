@@ -9,47 +9,7 @@ interface IApi {
 
 export const signUp: IApi = async (req, res) => {
   try {
-    const {
-      userName,
-      password,
-      email,
-      avatar,
-      gender,
-      country,
-      title,
-      company,
-      phoneNumber,
-      introduction,
-      level,
-      linkedInURL,
-      primaryExpertise,
-      secondaryExpertise,
-      tertiaryExpertise,
-      disciplines,
-      skills,
-      tools,
-    } = req.body
-
-    const { newMentor, token } = await save({
-      userName,
-      password,
-      email,
-      avatar,
-      gender,
-      country,
-      title,
-      company,
-      phoneNumber,
-      introduction,
-      level,
-      linkedInURL,
-      primaryExpertise,
-      secondaryExpertise,
-      tertiaryExpertise,
-      disciplines,
-      skills,
-      tools,
-    })
+    const { newMentor, token } = await save({ ...req.body })
 
     return res.status(200).send({
       newMentor,

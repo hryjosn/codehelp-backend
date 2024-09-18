@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from "typeorm"
 export class CreateMemberTable1722495200326 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
-            CREATE TABLE member (
+            CREATE TABLE IF NOT EXISTS member (
                 id                  UUID                            DEFAULT gen_random_uuid()   NOT NULL,
                 user_name           VARCHAR(30)                                                 NOT NULL,
                 email               TEXT                                                        NOT NULL,
