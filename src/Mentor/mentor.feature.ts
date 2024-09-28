@@ -2,15 +2,16 @@ import bcrypt from "bcrypt"
 import { IAccount, IPagination, RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
 import { addMentor, findMany, findMentorBy } from "./mentor.model"
-import { IMentor } from "~/Mentor/types"
+import { IMentorRequestBody } from "~/Mentor/types"
 import { Mentor } from "~/db/entities/Mentor"
 import FeatureError from "~/utils/FeatureError"
+import { parseImageUrl, uploadFiles } from "~/utils/assetHelper"
 
 export const save = async (
-  data: IMentor,
+  data: IMentorRequestBody,
 ): Promise<{ newMentor: Mentor; token: string }> => {
   try {
-    const { email, password } = data
+    const { email, password, avatar } = data
 
     const isEmailExist = await findMentorBy({ email })
     if (isEmailExist) {
@@ -21,9 +22,13 @@ export const save = async (
       )
     }
 
+    const result = await uploadFiles([avatar[0]])
+    const [avatarImageId] = result
+
     const encryptedPassword = await bcrypt.hash(password, 10)
     const newMentor = await addMentor({
       ...data,
+      avatar: parseImageUrl(avatarImageId),
       password: encryptedPassword,
     })
 

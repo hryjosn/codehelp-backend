@@ -1,16 +1,17 @@
-import { IMember } from "~/Member/types"
+import { IMemberRequestBody } from "~/Member/types"
 import bcrypt from "bcrypt"
 import { IAccount, RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
 import { addMember, findMemberBy } from "./member.model"
 import { Member } from "~/db/entities/Member"
 import FeatureError from "~/utils/FeatureError"
+import { parseImageUrl, uploadFiles } from "~/utils/assetHelper"
 
 export const save = async (
-  data: IMember,
+  data: IMemberRequestBody,
 ): Promise<{ newMember: Member; token: string }> => {
   try {
-    const { email, password } = data
+    const { email, password, avatar } = data
     const isEmailExist = await findMemberBy({ email })
     if (isEmailExist) {
       throw new FeatureError(
@@ -20,9 +21,13 @@ export const save = async (
       )
     }
 
+    const result = await uploadFiles([avatar[0]])
+    const [avatarImageId] = result
+
     const encryptedPassword = await bcrypt.hash(password, 10)
     const newMember = await addMember({
       ...data,
+      avatar: parseImageUrl(avatarImageId),
       password: encryptedPassword,
     })
 

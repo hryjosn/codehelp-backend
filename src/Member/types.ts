@@ -2,7 +2,6 @@ export interface IMember {
   userName: string
   email: string
   password: string
-  avatar: string
   gender: string
   country: string
   title: string
@@ -12,6 +11,14 @@ export interface IMember {
   introduction: string
   level: LEVEL_OF_EXPERIENCE
   fieldOfWork: string[]
+}
+
+export interface IMemberRequestBody extends IMember {
+  avatar: Express.Multer.File[]
+}
+
+export interface IMemberModel extends IMember {
+  avatar: string
 }
 
 export enum LEVEL_OF_EXPERIENCE {

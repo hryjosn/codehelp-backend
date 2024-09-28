@@ -1,7 +1,7 @@
 import { Member } from "~/db/entities/Member"
-import { IMember } from "./types"
+import { IMemberModel } from "./types"
 
-export const addMember = async (data: IMember) => {
+export const addMember = async (data: IMemberModel) => {
   const {
     userName,
     password,

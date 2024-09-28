@@ -9,46 +9,12 @@ interface IApi {
 
 export const signUp: IApi = async (req, res) => {
   try {
-    const {
-      userName,
-      password,
-      email,
-      avatar,
-      gender,
-      country,
-      title,
-      company,
-      phoneNumber,
-      introduction,
-      level,
-      linkedInURL,
-      primaryExpertise,
-      secondaryExpertise,
-      tertiaryExpertise,
-      disciplines,
-      skills,
-      tools,
-    } = req.body
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] }
+    const { avatar } = files
 
     const { newMentor, token } = await save({
-      userName,
-      password,
-      email,
+      ...req.body,
       avatar,
-      gender,
-      country,
-      title,
-      company,
-      phoneNumber,
-      introduction,
-      level,
-      linkedInURL,
-      primaryExpertise,
-      secondaryExpertise,
-      tertiaryExpertise,
-      disciplines,
-      skills,
-      tools,
     })
 
     return res.status(200).send({
