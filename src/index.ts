@@ -6,8 +6,9 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import { ValidationError } from "express-validation"
 import dataSource from "./db/dataSource"
-import mentorRouter from "~/routers/user/mentor"
-import memberRouter from "~/routers/user/member"
+import mentorRouter from "~/Mentor/mentor.router"
+import memberRouter from "~/Member/member.router"
+import imageRouter from "~/Image/image.router"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -18,6 +19,8 @@ export const createServer = async () => {
 
   app.use("/mentor", mentorRouter)
   app.use("/member", memberRouter)
+  app.use("/image", imageRouter)
+
   app.use((req: Request) => {
     console.log("index", req.body)
   })

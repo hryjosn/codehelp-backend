@@ -1,7 +1,7 @@
 import { Mentor } from "~/db/entities/Mentor"
-import { IMentor } from "./types"
+import { IMentorModel } from "./types"
 
-export const addMentor = async (data: IMentor) => {
+export const addMentor = async (data: IMentorModel) => {
   const {
     userName,
     password,

@@ -2,7 +2,6 @@ export interface IMentor {
   userName: string
   email: string
   password: string
-  avatar: string
   gender: string
   country: string
   title: string
@@ -18,4 +17,12 @@ export interface IMentor {
   disciplines: string[]
   skills: string[]
   tools: string[]
+}
+
+export interface IMentorRequestBody extends IMentor {
+  avatar: Express.Multer.File[]
+}
+
+export interface IMentorModel extends IMentor {
+  avatar: string
 }

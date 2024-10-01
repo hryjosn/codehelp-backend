@@ -7,16 +7,22 @@ import {
   getMentorList,
   login,
   signUp,
-} from "~/controllers/mentor"
-import { accountSchema, paginationSchema } from "../common-param-validation"
+} from "./mentor.controller"
+import {
+  accountSchema,
+  paginationSchema,
+} from "~/utils/common-param-validation"
+import { uploadFiles } from "~/middleware/file"
 
 const router = express.Router()
 
-router.route("/signUp").post(
-  // uploadFiles.fields([{ name: "avatar", maxCount: 1 }]),
-  validation(signUpSchema),
-  signUp,
-)
+router
+  .route("/signUp")
+  .post(
+    uploadFiles.fields([{ name: "avatar", maxCount: 1 }]),
+    validation(signUpSchema),
+    signUp,
+  )
 
 router.route("/login").post(validation(accountSchema), login)
 
