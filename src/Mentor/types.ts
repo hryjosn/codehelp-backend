@@ -17,6 +17,7 @@ export interface IMentor {
   disciplines: string[]
   skills: string[]
   tools: string[]
+  quickReply: boolean
 }
 
 export interface IMentorRequestBody extends IMentor {

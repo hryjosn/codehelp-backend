@@ -87,4 +87,7 @@ export class Mentor extends BaseEntity {
     default: () => "now()",
   })
   updatedAt?: Date
+
+  @Column("boolean", { name: "quick_reply", default: () => "false" })
+  quickReply?: boolean
 }
