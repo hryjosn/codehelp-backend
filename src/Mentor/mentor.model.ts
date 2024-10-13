@@ -21,7 +21,6 @@ export const addMentor = async (data: IMentorModel) => {
     disciplines,
     skills,
     tools,
-    quickReply,
   } = data
 
   const newMentor = new Mentor()
@@ -43,7 +42,6 @@ export const addMentor = async (data: IMentorModel) => {
   newMentor.disciplines = disciplines
   newMentor.skills = skills
   newMentor.tools = tools
-  newMentor.quickReply = quickReply
   return await newMentor.save()
 }
 
