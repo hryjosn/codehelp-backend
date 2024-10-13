@@ -15,7 +15,7 @@ export const signUpSchema = Joi.object({
     title: Joi.string().required().max(100),
     company: Joi.string().required().max(100),
     introduction: Joi.string().required().max(500),
-    phoneNumber: Joi.string().required().max(10),
+    phoneNumber: Joi.string().required().max(20),
     level: Joi.number().required().max(3).min(0),
     linkedInURL: Joi.string().required().max(257),
     primaryExpertise: Joi.string().required().max(100),

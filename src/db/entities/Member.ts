@@ -35,7 +35,7 @@ export class Member extends BaseEntity {
   @Column("character varying", { name: "company", length: 100 })
   company?: string
 
-  @Column("character", { name: "phone_number", length: 10 })
+  @Column("character", { name: "phone_number", length: 20 })
   phoneNumber?: string
 
   @Column("boolean", { name: "email_otp", default: () => "false" })
