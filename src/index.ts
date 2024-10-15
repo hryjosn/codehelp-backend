@@ -9,6 +9,7 @@ import dataSource from "./db/dataSource"
 import mentorRouter from "~/Mentor/mentor.router"
 import memberRouter from "~/Member/member.router"
 import imageRouter from "~/Image/image.router"
+import chatroomRouter from "./Chatroom/chatroom.router"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -20,6 +21,7 @@ export const createServer = async () => {
   app.use("/mentor", mentorRouter)
   app.use("/member", memberRouter)
   app.use("/image", imageRouter)
+  app.use("/chatroom", chatroomRouter)
 
   app.use((req: Request) => {
     console.log("index", req.body)
