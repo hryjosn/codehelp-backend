@@ -64,6 +64,7 @@ const init = async () => {
     socket.on("leave", (roomId) => {
       console.log(`leave ${roomId}`)
       socket.leave(roomId)
+      socket.to(roomId).emit("leave")
     })
 
     socket.on("disconnect", () => {
