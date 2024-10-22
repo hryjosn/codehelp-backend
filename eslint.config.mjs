@@ -18,7 +18,6 @@ export default [
     },
     rules: {
       ...eslintConfigPrettier.rules,
-      "react/prop-types": 0,
       "prettier/prettier": [
         "error",
         {
@@ -27,28 +26,7 @@ export default [
         },
       ],
       "@typescript-eslint/no-unused-vars": "error",
-      "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
-    },
-  },
-  {
-    files: ["**/*.js", "**/*.jsx", "**/*.mjs"],
-    languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: "module",
-    },
-    plugins: {
-      prettier: eslintPluginPrettier,
-    },
-    rules: {
-      ...eslintConfigPrettier.rules,
-      "react/prop-types": 0,
-      "prettier/prettier": [
-        "error",
-        {
-          endOfLine: "auto",
-        },
-      ],
     },
   },
 ];
