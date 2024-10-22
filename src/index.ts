@@ -9,7 +9,7 @@ import dataSource from "./db/dataSource"
 import mentorRouter from "~/Mentor/mentor.router"
 import memberRouter from "~/Member/member.router"
 import imageRouter from "~/Image/image.router"
-import { ClientToServerEvents, ServerToClientEvents } from "./types"
+import { WebRTCSocket } from "./socket/WebRTCSocket"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -37,43 +37,15 @@ export const createServer = async () => {
 const init = async () => {
   const server = await createServer()
   const serverForSocket = http.createServer(server)
-  const io = new Server<ClientToServerEvents, ServerToClientEvents>(
-    serverForSocket,
-    {
-      cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET"],
-      },
+  const io = new Server(serverForSocket, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET"],
     },
-  )
+  })
   io.on("connection", (socket) => {
     console.log("connect")
-
-    socket.on("join", (room) => {
-      socket.join(room)
-      socket.to(room).emit("ready")
-    })
-
-    socket.on("offer", (room, description) => {
-      socket.to(room).emit("offer", description)
-    })
-
-    socket.on("answer", (room, description) => {
-      socket.to(room).emit("answer", description)
-    })
-
-    socket.on("ice_candidate", (room, data) => {
-      socket.to(room).emit("ice_candidate", data)
-    })
-
-    socket.on("hangup", (room) => {
-      socket.to(room).emit("otherUserHangup")
-      socket.leave(room)
-    })
-
-    socket.on("disconnect", () => {
-      console.log("user disconnect")
-    })
+    WebRTCSocket(socket)
   })
   const port = process.env.PORT
   serverForSocket.listen(Number(port) || 3001, () => {
