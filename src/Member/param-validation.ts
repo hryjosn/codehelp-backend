@@ -15,7 +15,7 @@ export const signUpSchema = Joi.object({
     title: Joi.string().required().max(100),
     company: Joi.string().required().max(100),
     introduction: Joi.string().required().max(500),
-    phoneNumber: Joi.string().required().max(10),
+    phoneNumber: Joi.string().required().max(20),
     level: Joi.number().required().max(6).min(0),
     fieldOfWork: Joi.array().required().min(1).max(5),
   }),
