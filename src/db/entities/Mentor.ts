@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, Index } from "typeorm"
+import { BaseEntity, Column, Entity, Index, OneToMany } from "typeorm"
+import { Chatroom } from "./Chatroom"
 
 @Index("mentor_email_key", ["email"], { unique: true })
 @Index("mentor_pkey", ["id"], { unique: true })
@@ -90,4 +91,7 @@ export class Mentor extends BaseEntity {
 
   @Column("boolean", { name: "quick_reply", default: () => "false" })
   quickReply?: boolean
+
+  @OneToMany(() => Chatroom, (chatroom) => chatroom.mentor)
+  chatrooms?: Chatroom[]
 }
