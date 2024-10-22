@@ -40,10 +40,32 @@ const init = async () => {
   io.on("connection", (socket) => {
     console.log("connect")
 
+    socket.on("join", (room) => {
+      socket.join(room)
+      socket.to(room).emit("ready", "Getting ready to start conference")
+    })
+
+    socket.on("offer", (room, description) => {
+      socket.to(room).emit("offer", description)
+    })
+
+    socket.on("answer", (room, description) => {
+      socket.to(room).emit("answer", description)
+    })
+
+    socket.on("ice_candidate", (room, data) => {
+      socket.to(room).emit("ice_candidate", data)
+    })
+
+    socket.on("hangup", (room) => {
+      socket.leave(room)
+    })
+
     socket.on("disconnect", () => {
       console.log("user disconnect")
     })
   })
+
   const port = process.env.PORT
   serverForSocket.listen(Number(port) || 3001, () => {
     console.log(`App running on port ${Number(port) || 3001}.`)
