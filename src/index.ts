@@ -9,6 +9,7 @@ import dataSource from "./db/dataSource"
 import mentorRouter from "~/Mentor/mentor.router"
 import memberRouter from "~/Member/member.router"
 import imageRouter from "~/Image/image.router"
+import { ClientToServerEvents, ServerToClientEvents } from "./types"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -36,9 +37,34 @@ export const createServer = async () => {
 const init = async () => {
   const server = await createServer()
   const serverForSocket = http.createServer(server)
-  const io = new Server(serverForSocket)
+  const io = new Server<ClientToServerEvents, ServerToClientEvents>(
+    serverForSocket,
+  )
   io.on("connection", (socket) => {
     console.log("connect")
+
+    socket.on("join", (roomId) => {
+      console.log(`user join ${roomId}`)
+      socket.join(roomId)
+      socket.to(roomId).emit("ready", "準備通話")
+    })
+
+    socket.on("offer", (roomId, desc) => {
+      socket.to(roomId).emit("offer", desc)
+    })
+
+    socket.on("answer", (roomId, desc) => {
+      socket.to(roomId).emit("answer", desc)
+    })
+
+    socket.on("iceCandidate", (roomId, data) => {
+      socket.to(roomId).emit("iceCandidate", data)
+    })
+
+    socket.on("leave", (roomId) => {
+      console.log(`leave ${roomId}`)
+      socket.leave(roomId)
+    })
 
     socket.on("disconnect", () => {
       console.log("user disconnect")
