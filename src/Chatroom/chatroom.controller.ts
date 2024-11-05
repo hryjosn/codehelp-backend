@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import FeatureError from "~/utils/FeatureError"
-import { getInfo, getList, save } from "./chatroom.feature"
+import { getInfo, getList, save, remove } from "./chatroom.feature"
 import { RESPONSE_CODE } from "~/types"
 
 interface IApi {
@@ -74,6 +74,33 @@ export const getChatroomList: IApi = async (req, res) => {
     return res.status(200).send({
       chatroomList,
       status: "ok",
+    })
+  } catch (error) {
+    if (error instanceof FeatureError) {
+      res.status(error.serverStatus).send({
+        code: error.code,
+        message: error.message,
+      })
+    } else {
+      res.status(500).send({
+        code: RESPONSE_CODE.UNKNOWN_ERROR,
+        message: error,
+      })
+      throw error
+    }
+  }
+}
+
+export const deleteChatroom: IApi = async (req, res) => {
+  try {
+    const { userId } = req.body
+    const { chatroomId } = req.params
+
+    await remove({ chatroomId: chatroomId, userId })
+
+    return res.status(200).send({
+      status: "ok",
+      message: `Chatroom ${chatroomId} is deleted`,
     })
   } catch (error) {
     if (error instanceof FeatureError) {

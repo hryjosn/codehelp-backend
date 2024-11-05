@@ -1,8 +1,13 @@
 import express from "express"
 import { validation } from "~/middleware/validation"
-import { createChatroomSchema, getChatroomInfoSchema } from "./param-validation"
+import {
+  createChatroomSchema,
+  deleteChatroomSchema,
+  getChatroomInfoSchema,
+} from "./param-validation"
 import {
   createChatroom,
+  deleteChatroom,
   getChatroom,
   getChatroomList,
 } from "./chatroom.controller"
@@ -21,4 +26,7 @@ router
 
 router.route("/list").get(validation(paginationSchema), auth, getChatroomList)
 
+router
+  .route("/delete/:chatroomId")
+  .delete(validation(deleteChatroomSchema), auth, deleteChatroom)
 export default router

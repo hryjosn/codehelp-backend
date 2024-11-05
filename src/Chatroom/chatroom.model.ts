@@ -93,3 +93,7 @@ export const findMany = async ({
     .take(count)
     .getMany()
 }
+
+export const deleteOne = (chatroomId: string) => {
+  return Chatroom.delete({ id: chatroomId })
+}

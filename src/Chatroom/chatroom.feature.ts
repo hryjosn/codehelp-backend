@@ -2,6 +2,7 @@ import { findMemberBy } from "~/Member/member.model"
 import {
   add,
   checkIsChatroomExists,
+  deleteOne,
   findMany,
   findOneBy,
 } from "./chatroom.model"
@@ -9,6 +10,7 @@ import { findMentorBy } from "~/Mentor/mentor.model"
 import FeatureError from "~/utils/FeatureError"
 import { RESPONSE_CODE } from "~/types"
 import { Chatroom } from "~/db/entities/Chatroom"
+import { DeleteResult } from "typeorm"
 
 export const save = async ({
   mentorId,
@@ -91,6 +93,31 @@ export const getList = async ({
     const skip = (page - 1) * count
     const chatroom = await findMany({ userId, skip, count })
     return chatroom
+  } catch (error) {
+    throw error
+  }
+}
+
+export const remove = async ({
+  chatroomId,
+  userId,
+}: {
+  chatroomId: string
+  userId: string
+}): Promise<DeleteResult> => {
+  try {
+    const chatroom = await findOneBy({ chatroomId, userId })
+
+    if (!chatroom) {
+      throw new FeatureError(
+        403,
+        RESPONSE_CODE.TARGET_NOT_EXISTS,
+        "Chatroom not found or you're not in this chatroom",
+      )
+    }
+
+    const deleteDetail = await deleteOne(chatroomId)
+    return deleteDetail
   } catch (error) {
     throw error
   }

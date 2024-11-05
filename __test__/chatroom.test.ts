@@ -102,7 +102,7 @@ describe("Chatroom router POST: Create a chatroom", () => {
     chatroomId = res.body.chatroomId
   })
 
-  it("(x) Should return an error with response code 4002 when the mentor not found.", async () => {
+  it("(x) Should return an error with response code 4002 when the mentor is not found.", async () => {
     const res = await request(server)
       .post("/chatroom/create")
       .send({
@@ -114,7 +114,7 @@ describe("Chatroom router POST: Create a chatroom", () => {
     expect(res.body.code).toBe(RESPONSE_CODE.USER_DATA_ERROR)
   })
 
-  it("(x) Should return an error with response code 4002 when the member not found.", async () => {
+  it("(x) Should return an error with response code 4002 when the member is not found.", async () => {
     const res = await request(server)
       .post("/chatroom/create")
       .send({
@@ -153,9 +153,9 @@ describe("Chatroom router POST: Create a chatroom", () => {
  *
  * (o) Should return the chatroom id when the request is successful.
  *
- * (x) Should return an error with response code 4002 when the mentor not found.
+ * (x) Should return an error with response code 4002 when the mentor is not found.
  *
- * (x) Should return an error with response code 4002 when the member not found.
+ * (x) Should return an error with response code 4002 when the member is not found.
  *
  * (x) Should return an error with response code 4003 when the users already have a chatroom.
  *
@@ -176,7 +176,7 @@ describe("Chatroom router GET: Chatroom info", () => {
     expect(res.body.chatroom).toHaveProperty("messages")
   })
 
-  it("(x) Should return an error with response code 4002 when the user not found.", async () => {
+  it("(x) Should return an error with response code 4002 when the user is not found.", async () => {
     const res = await request(server)
       .get(`/chatroom/info/${chatroomId}`)
       .set("Authorization", NOT_EXISTS_MEMBER_TOKEN)
@@ -185,7 +185,7 @@ describe("Chatroom router GET: Chatroom info", () => {
     expect(res.body.code).toBe(RESPONSE_CODE.USER_DATA_ERROR)
   })
 
-  it("(x) Should return an error with response code 4004 when the chatroom not found.", async () => {
+  it("(x) Should return an error with response code 4004 when the chatroom is not found.", async () => {
     const res = await request(server)
       .get(`/chatroom/info/${NOT_EXISTS_ID}`)
       .set("Authorization", memberToken)
@@ -194,7 +194,7 @@ describe("Chatroom router GET: Chatroom info", () => {
     expect(res.body.code).toBe(RESPONSE_CODE.TARGET_NOT_EXISTS)
   })
 
-  it("(x) Should return an error with response code 4004 when the user not in this chatroom.", async () => {
+  it("(x) Should return an error with response code 4004 when the user is not in this chatroom.", async () => {
     const res = await request(server)
       .get(`/chatroom/info/${secondChatroomId}`)
       .set("Authorization", mentorToken)
@@ -203,7 +203,7 @@ describe("Chatroom router GET: Chatroom info", () => {
     expect(res.body.code).toBe(RESPONSE_CODE.TARGET_NOT_EXISTS)
   })
 
-  it("(x) Should return an error with response status 404 when chatroomId params is missing.", async () => {
+  it("(x) Should return an error with response status 404 when query params 'chatroomId' is missing.", async () => {
     const res = await request(server)
       .get(`/chatroom/info`)
       .set("Authorization", mentorToken)
@@ -217,13 +217,13 @@ describe("Chatroom router GET: Chatroom info", () => {
  *
  * (o) Should return the chatroom id and message record when the request is successful.
  *
- * (x) Should return an error with response code 4002 when the user not found.
+ * (x) Should return an error with response code 4002 when the user is not found.
  *
- * (x) Should return an error with response code 4004 when the chatroom not found.
+ * (x) Should return an error with response code 4004 when the chatroom is not found.
  *
- * (x) Should return an error with response code 4005 when the user not in this chatroom.
+ * (x) Should return an error with response code 4005 when the user is not in this chatroom.
  *
- * (x) (x) Should return an error with response status 404 when chatroomId params is missing.
+ * (x) Should return an error with response status 404 when query params 'chatroomId' is missing.
  *
  */
 
@@ -239,7 +239,7 @@ describe("Chatroom router GET: Chatroom list", () => {
     expect(res.body.chatroomList.length).toBeGreaterThanOrEqual(0)
   })
 
-  it("(x) Should return an error with response code 4002 when the user not found.", async () => {
+  it("(x) Should return an error with response code 4002 when the user is not found.", async () => {
     const res = await request(server)
       .get("/chatroom/list")
       .query({ page: 1, count: 10 })
@@ -264,8 +264,81 @@ describe("Chatroom router GET: Chatroom list", () => {
  *
  * (o) Should return the chatroom list when the request is successful.
  *
- * (x) Should return an error with response code 4002 when the user not found.
+ * (x) Should return an error with response code 4002 when the user is not found.
  *
  * (x) Should return an error with response code 4001 when the pagination params is missing.
+ *
+ */
+
+describe("Chatroom router DELETE: Delete the chatroom", () => {
+  it("(o) Should return the status with 'ok' when the request is successful.", async () => {
+    const res = await request(server)
+      .delete(`/chatroom/delete/${chatroomId}`)
+      .set("Authorization", memberToken)
+
+    expect(res.status).toBe(200)
+    expect(res.body.status).toBe("ok")
+    expect(res.body.message).toBe(`Chatroom ${chatroomId} is deleted`)
+  })
+
+  it("(o) [GET] Should return an error with response code 4004 when the chatroom is not found after deletion.", async () => {
+    const res = await request(server)
+      .get(`/chatroom/info/${chatroomId}`)
+      .set("Authorization", memberToken)
+
+    expect(res.status).toBe(403)
+    expect(res.body.code).toBe(RESPONSE_CODE.TARGET_NOT_EXISTS)
+  })
+
+  it("(x) Should return an error with response code 4002 when the user is not found.", async () => {
+    const res = await request(server)
+      .delete(`/chatroom/delete/${chatroomId}`)
+      .set("Authorization", NOT_EXISTS_MEMBER_TOKEN)
+
+    expect(res.status).toBe(401)
+    expect(res.body.code).toBe(RESPONSE_CODE.USER_DATA_ERROR)
+  })
+
+  it("(x) Should return an error with response code 4004 when the chatroom is not found.", async () => {
+    const res = await request(server)
+      .delete(`/chatroom/delete/${NOT_EXISTS_ID}`)
+      .set("Authorization", memberToken)
+
+    expect(res.status).toBe(403)
+    expect(res.body.code).toBe(RESPONSE_CODE.TARGET_NOT_EXISTS)
+  })
+
+  it("(x) Should return an error with response code 4004 when the user is not in this chatroom.", async () => {
+    const res = await request(server)
+      .delete(`/chatroom/delete/${secondChatroomId}`)
+      .set("Authorization", mentorToken)
+
+    expect(res.status).toBe(403)
+    expect(res.body.code).toBe(RESPONSE_CODE.TARGET_NOT_EXISTS)
+  })
+
+  it("(x) Should return an error with response status 404 when query params 'chatroomId' is missing.", async () => {
+    const res = await request(server)
+      .delete(`/chatroom/delete`)
+      .set("Authorization", mentorToken)
+
+    expect(res.status).toBe(404)
+  })
+})
+
+/*
+ * [DELETE] Chatroom list
+ *
+ * (o) Should return the status with 'ok' when the request is successful.
+ *
+ * (o) [GET] Should return an error with response code 4004 when the chatroom is not found after deletion.
+ *
+ * (x) Should return an error with response code 4002 when the user is not found.
+ *
+ * (x) Should return an error with response code 4004 when the chatroom is not found.
+ *
+ * (x) Should return an error with response code 4005 when the user is not in this chatroom.
+ *
+ * (x) Should return an error with response status 404 when query params 'chatroomId' is missing.
  *
  */
