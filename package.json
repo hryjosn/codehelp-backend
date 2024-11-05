@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
-    "dev-local": "dotenv -e .env.local nodemon ./src/index.ts",
-    "start": "node ./dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "dev-local": "dotenv -e .env.local nodemon src/index.ts",
+    "start": "node dist/src/index.js",
     "async-entities": "dotenv -e .env.development cross-var -- typeorm-model-generator -h %DB_HOST% -d %DB% -p %DB_PORT% -u %DB_USER% -x %DB_PWD% -e postgres -o src/db/entities --noConfig -a --strictMode ?",
     "migration:create": "typeorm migration:create src/db/migrations/Template",
     "migration:up": "typeorm-ts-node-commonjs migration:run -d src/db/dataSource.ts",
