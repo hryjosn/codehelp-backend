@@ -42,7 +42,7 @@ const init = async () => {
   const serverForSocket = http.createServer(server)
   const io = new Server(serverForSocket, {
     cors: {
-      origin: "*",
+      origin: ["http://localhost:3000", "https://codehelp-web.vercel.app/"],
       methods: ["GET"],
     },
   })
@@ -50,9 +50,9 @@ const init = async () => {
     console.log("connect")
     WebRTCSocket(socket)
   })
-  const port = process.env.PORT
-  serverForSocket.listen(Number(port) || 3001, () => {
-    console.log(`App running on port ${Number(port) || 3001}.`)
+  const port = process.env.PORT || 3001
+  serverForSocket.listen(Number(port), "0.0.0.0", () => {
+    console.log(`App running on port ${Number(port)}.`)
   })
 }
 export default init()
