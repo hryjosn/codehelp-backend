@@ -41,4 +41,4 @@ export const getImageFromS3 = async (id: string) => {
   }
 }
 export const parseImageUrl = (id: string) =>
-  `${process.env.HOST_URL}/image/${id}`
+  `${process.env.HOST_URL}image/${id}`
