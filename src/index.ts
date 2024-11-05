@@ -1,15 +1,15 @@
+import bodyParser from "body-parser"
+import cors from "cors"
 import "dotenv/config"
 import express, { Express, Request, Response } from "express"
+import { ValidationError } from "express-validation"
 import http from "http"
 import { Server } from "socket.io"
-import cors from "cors"
-import bodyParser from "body-parser"
-import { ValidationError } from "express-validation"
-import dataSource from "./db/dataSource"
-import mentorRouter from "~/Mentor/mentor.router"
-import memberRouter from "~/Member/member.router"
-import imageRouter from "~/Image/image.router"
 import chatroomRouter from "~/Chatroom/chatroom.router"
+import imageRouter from "~/Image/image.router"
+import memberRouter from "~/Member/member.router"
+import mentorRouter from "~/Mentor/mentor.router"
+import dataSource from "./db/dataSource"
 import messageRouter from "./Message/message.router"
 import { WebRTCSocket } from "./socket/WebRTCSocket"
 
@@ -42,7 +42,7 @@ const init = async () => {
   const serverForSocket = http.createServer(server)
   const io = new Server(serverForSocket, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: "*",
       methods: ["GET"],
     },
   })
