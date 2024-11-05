@@ -11,6 +11,7 @@ import memberRouter from "~/Member/member.router"
 import imageRouter from "~/Image/image.router"
 import chatroomRouter from "~/Chatroom/chatroom.router"
 import messageRouter from "./Message/message.router"
+import { WebRTCSocket } from "./socket/WebRTCSocket"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -39,13 +40,15 @@ export const createServer = async () => {
 const init = async () => {
   const server = await createServer()
   const serverForSocket = http.createServer(server)
-  const io = new Server(serverForSocket)
+  const io = new Server(serverForSocket, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET"],
+    },
+  })
   io.on("connection", (socket) => {
     console.log("connect")
-
-    socket.on("disconnect", () => {
-      console.log("user disconnect")
-    })
+    WebRTCSocket(socket)
   })
   const port = process.env.PORT
   serverForSocket.listen(Number(port) || 3001, () => {

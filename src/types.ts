@@ -22,3 +22,22 @@ export interface IPagination {
   page: number
   count: number
 }
+export interface IIce_candidate {
+  label: number | null
+  id: string | null
+  candidate: string
+}
+export interface ServerToClientEvents {
+  offer: (description: RTCSessionDescription) => void
+  answer: (description: RTCSessionDescription) => void
+  ice_candidate: (data: IIce_candidate) => void
+  ready: () => void
+  otherUserHangup: () => void
+}
+export interface ClientToServerEvents {
+  join: (roomID: string, callback: (socketIds: string[]) => void) => void
+  answer: (room: string, description: RTCSessionDescription) => void
+  ice_candidate: (room: string, data: IIce_candidate) => void
+  hangup: (room: string) => void
+  offer: (room: string, description: RTCSessionDescription) => void
+}
