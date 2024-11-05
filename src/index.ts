@@ -48,7 +48,7 @@ const init = async () => {
   })
   io.on("connection", (socket) => {
     console.log("connect")
-    WebRTCSocket(socket)
+    WebRTCSocket(socket, io)
   })
   const port = process.env.PORT
   serverForSocket.listen(Number(port) || 3001, () => {

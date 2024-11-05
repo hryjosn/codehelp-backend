@@ -28,16 +28,28 @@ export interface IIce_candidate {
   candidate: string
 }
 export interface ServerToClientEvents {
-  offer: (description: RTCSessionDescription) => void
-  answer: (description: RTCSessionDescription) => void
-  ice_candidate: (data: IIce_candidate) => void
-  ready: () => void
-  otherUserHangup: () => void
+  offer: (description: RTCSessionDescription, remoteId: string) => void
+  answer: (description: RTCSessionDescription, remoteId: string) => void
+  ice_candidate: (data: IIce_candidate, remoteId: string) => void
+  ready: (socketID: string, members: string[]) => void
+  leave: () => void
 }
 export interface ClientToServerEvents {
   join: (roomID: string, callback: (socketIds: string[]) => void) => void
-  answer: (room: string, description: RTCSessionDescription) => void
-  ice_candidate: (room: string, data: IIce_candidate) => void
+  offer: (
+    desc: RTCSessionDescription,
+    remoteId: string,
+    localId: string,
+  ) => void
+  answer: (
+    desc: RTCSessionDescription,
+    remoteId: string,
+    localId: string,
+  ) => void
+  ice_candidate: (
+    data: IIce_candidate,
+    remoteId: string,
+    localId: string,
+  ) => void
   hangup: (room: string) => void
-  offer: (room: string, description: RTCSessionDescription) => void
 }
