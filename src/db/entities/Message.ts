@@ -21,6 +21,9 @@ export class Message extends BaseEntity {
   @Column("uuid", { name: "user_id" })
   userId?: string
 
+  @Column("text", { name: "content" })
+  content?: string
+
   @Column("timestamp without time zone", {
     name: "created_at",
     default: () => "now()",

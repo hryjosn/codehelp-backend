@@ -40,6 +40,7 @@ export const findOneBy = async ({
   return Chatroom.createQueryBuilder("chatroom")
     .leftJoin("chatroom.member", "member")
     .leftJoin("chatroom.mentor", "mentor")
+    .leftJoinAndSelect("chatroom.messages", "message")
     .where("chatroom.id = :chatroomId AND chatroom.member_id = :userId", {
       chatroomId,
       userId,
@@ -57,6 +58,10 @@ export const findOneBy = async ({
       "mentor.id",
       "mentor.userName",
       "mentor.avatar",
+      "message.id",
+      "message.userId",
+      "message.content",
+      "message.createdAt",
     ])
     .getOne()
 }

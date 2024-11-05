@@ -80,6 +80,7 @@ beforeAll(async () => {
     secondChatroomId = chatroom.id!
   } catch (error) {
     console.log(error)
+    throw error
   }
 })
 
@@ -149,7 +150,7 @@ describe("Chatroom router POST: Create a chatroom", () => {
 })
 
 /*
- * [Post] Create a chatroom
+ * [POST] Create a chatroom
  *
  * (o) Should return the chatroom id when the request is successful.
  *
@@ -221,7 +222,7 @@ describe("Chatroom router GET: Chatroom info", () => {
  *
  * (x) Should return an error with response code 4004 when the chatroom is not found.
  *
- * (x) Should return an error with response code 4005 when the user is not in this chatroom.
+ * (x) Should return an error with response code 4004 when the user is not in this chatroom.
  *
  * (x) Should return an error with response status 404 when query params 'chatroomId' is missing.
  *
@@ -337,7 +338,7 @@ describe("Chatroom router DELETE: Delete the chatroom", () => {
  *
  * (x) Should return an error with response code 4004 when the chatroom is not found.
  *
- * (x) Should return an error with response code 4005 when the user is not in this chatroom.
+ * (x) Should return an error with response code 4004 when the user is not in this chatroom.
  *
  * (x) Should return an error with response status 404 when query params 'chatroomId' is missing.
  *
