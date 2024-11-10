@@ -8,7 +8,6 @@ export const WebRTCSocket = (
   socket.on("join", (room) => {
     socket.join(room)
     const members = Array.from(io.of("/").adapter.rooms.get(room) || [])
-    // 向所有裝置告知有新裝置加入（包含自己）
     socket.in(room).emit("ready", socket.id, members)
   })
 
@@ -24,8 +23,8 @@ export const WebRTCSocket = (
     socket.to(localId).emit("ice_candidate", data, remoteId)
   })
 
-  socket.on("hangup", (room) => {
-    socket.to(room).emit("leave")
+  socket.on("hangup", (room, remoteId) => {
+    socket.to(room).emit("leave", remoteId)
     socket.leave(room)
   })
 

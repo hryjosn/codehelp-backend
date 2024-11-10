@@ -31,11 +31,11 @@ export interface ServerToClientEvents {
   offer: (description: RTCSessionDescription, remoteId: string) => void
   answer: (description: RTCSessionDescription, remoteId: string) => void
   ice_candidate: (data: IIce_candidate, remoteId: string) => void
-  ready: (socketID: string, members: string[]) => void
-  leave: () => void
+  ready: (socketId: string, members: string[]) => void
+  leave: (remoteId: string) => void
 }
 export interface ClientToServerEvents {
-  join: (roomID: string, callback: (socketIds: string[]) => void) => void
+  join: (roomId: string) => void
   offer: (
     desc: RTCSessionDescription,
     remoteId: string,
@@ -51,5 +51,5 @@ export interface ClientToServerEvents {
     remoteId: string,
     localId: string,
   ) => void
-  hangup: (room: string) => void
+  hangup: (room: string, remoteId: string) => void
 }
