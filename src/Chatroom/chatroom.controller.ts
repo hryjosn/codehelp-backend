@@ -65,7 +65,7 @@ export const getChatroomList: IApi = async (req, res) => {
     const { userId } = req.body
     const { page, count } = req.query
 
-    const chatroomList = await getList({
+    const [chatroomList, total] = await getList({
       userId,
       page: Number(page),
       count: Number(count),
@@ -73,6 +73,7 @@ export const getChatroomList: IApi = async (req, res) => {
 
     return res.status(200).send({
       chatroomList,
+      total,
       status: "ok",
     })
   } catch (error) {

@@ -98,7 +98,7 @@ describe("Chatroom router POST: Create a chatroom", () => {
       .set("Authorization", memberToken)
 
     expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty("chatroomId")
+    expect(res.body.chatroomId).toBeDefined()
     expect(res.body.status).toBe("ok")
     chatroomId = res.body.chatroomId
   })
@@ -170,11 +170,11 @@ describe("Chatroom router GET: Chatroom info", () => {
       .set("Authorization", memberToken)
 
     expect(res.status).toBe(200)
-    expect(res.body.chatroom).toHaveProperty("id")
-    expect(res.body.chatroom).toHaveProperty("createdAt")
-    expect(res.body.chatroom).toHaveProperty("mentor")
-    expect(res.body.chatroom).toHaveProperty("member")
-    expect(res.body.chatroom).toHaveProperty("messages")
+    expect(res.body.chatroom.id).toBeDefined()
+    expect(res.body.chatroom.createdAt).toBeDefined()
+    expect(res.body.chatroom.mentor).toBeDefined()
+    expect(res.body.chatroom.member).toBeDefined()
+    expect(res.body.chatroom.messages).toBeDefined()
   })
 
   it("(x) Should return an error with response code 4002 when the user is not found.", async () => {
@@ -236,8 +236,9 @@ describe("Chatroom router GET: Chatroom list", () => {
       .set("Authorization", memberToken)
 
     expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty("chatroomList")
-    expect(res.body.chatroomList.length).toBeGreaterThanOrEqual(0)
+    expect(res.body.chatroomList).toBeDefined()
+    expect(res.body.chatroomList.length).toBeLessThanOrEqual(10)
+    expect(res.body.total).toBeGreaterThanOrEqual(0)
   })
 
   it("(x) Should return an error with response code 4002 when the user is not found.", async () => {

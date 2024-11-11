@@ -66,7 +66,7 @@ export const findOneBy = async ({
     .getOne()
 }
 
-export const findMany = async ({
+export const findManyAndCount = async ({
   userId,
   skip,
   count,
@@ -96,7 +96,7 @@ export const findMany = async ({
     ])
     .skip(skip)
     .take(count)
-    .getMany()
+    .getManyAndCount()
 }
 
 export const deleteOne = (chatroomId: string) => {
