@@ -17,6 +17,14 @@ export const WebRTCSocket = (
     socket.to(room).emit("answer", description)
   })
 
+  socket.on("remoteStartShare", (room, isScreenSharing) => {
+    socket.to(room).emit("remoteStartShare", isScreenSharing)
+  })
+
+  socket.on("remoteStopShare", (room, isScreenSharing) => {
+    socket.to(room).emit("remoteStopShare", isScreenSharing)
+  })
+
   socket.on("ice_candidate", (room, data) => {
     socket.to(room).emit("ice_candidate", data)
   })
