@@ -3,7 +3,7 @@ import {
   add,
   checkIsChatroomExists,
   deleteOne,
-  findMany,
+  findManyAndCount,
   findOneBy,
 } from "./chatroom.model"
 import { findMentorBy } from "~/Mentor/mentor.model"
@@ -88,10 +88,10 @@ export const getList = async ({
   userId: string
   page: number
   count: number
-}): Promise<Chatroom[]> => {
+}): Promise<[Chatroom[], number]> => {
   try {
     const skip = (page - 1) * count
-    const chatroom = await findMany({ userId, skip, count })
+    const chatroom = await findManyAndCount({ userId, skip, count })
     return chatroom
   } catch (error) {
     throw error
