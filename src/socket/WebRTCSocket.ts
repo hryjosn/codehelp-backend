@@ -27,8 +27,8 @@ export const WebRTCSocket = (
     socket.to(room).emit("remoteStopShare", isScreenSharing)
   })
 
-  socket.on("ice_candidate", (room, data) => {
-    socket.to(room).emit("ice_candidate", data)
+  socket.on("ice_candidate", (data, remoteId, localId) => {
+    socket.to(localId).emit("ice_candidate", data, remoteId)
   })
 
   socket.on("hangup", (room, remoteId) => {
