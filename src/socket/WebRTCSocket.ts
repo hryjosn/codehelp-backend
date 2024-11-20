@@ -1,20 +1,22 @@
-import { Socket } from "socket.io"
+import { Server, Socket } from "socket.io"
 import { ClientToServerEvents, ServerToClientEvents } from "../types"
 
 export const WebRTCSocket = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
+  io: Server,
 ) => {
   socket.on("join", (room) => {
     socket.join(room)
-    socket.to(room).emit("ready")
+    const members = Array.from(io.of("/").adapter.rooms.get(room) || [])
+    socket.in(room).emit("ready", socket.id, members)
   })
 
-  socket.on("offer", (room, description) => {
-    socket.to(room).emit("offer", description)
+  socket.on("offer", (desc, remoteId, localId) => {
+    socket.to(localId).emit("offer", desc, remoteId)
   })
 
-  socket.on("answer", (room, description) => {
-    socket.to(room).emit("answer", description)
+  socket.on("answer", (desc, remoteId, localId) => {
+    socket.to(localId).emit("answer", desc, remoteId)
   })
 
   socket.on("remoteStartShare", (room, isScreenSharing) => {
@@ -29,8 +31,8 @@ export const WebRTCSocket = (
     socket.to(room).emit("ice_candidate", data)
   })
 
-  socket.on("hangup", (room) => {
-    socket.to(room).emit("otherUserHangup")
+  socket.on("hangup", (room, remoteId) => {
+    socket.to(room).emit("leave", remoteId)
     socket.leave(room)
   })
 
