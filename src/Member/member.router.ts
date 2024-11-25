@@ -1,9 +1,8 @@
 import express from "express"
 
 import { validation } from "~/middleware/validation"
-import { login, signUp } from "./member.controller"
+import { signUp } from "./member.controller"
 import { signUpSchema } from "./param-validation"
-import { accountSchema } from "~/utils/common-param-validation"
 import { uploadFiles } from "~/middleware/file"
 
 const router = express.Router()
@@ -16,5 +15,4 @@ router
     signUp,
   )
 
-router.route("/login").post(validation(accountSchema), login)
 export default router
