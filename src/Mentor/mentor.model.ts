@@ -70,6 +70,7 @@ export const findMany = ({ count, skip }: { count: number; skip: number }) => {
       "country",
       "title",
       "company",
+      "experience",
       "phoneNumber",
       "emailOtp",
       "introduction",

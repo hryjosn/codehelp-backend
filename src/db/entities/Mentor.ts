@@ -92,6 +92,9 @@ export class Mentor extends BaseEntity {
   @Column("boolean", { name: "quick_reply", default: () => "false" })
   quickReply?: boolean
 
+  @Column("jsonb", { name: "experience", default: [] })
+  experience?: object
+
   @OneToMany(() => Chatroom, (chatroom) => chatroom.mentor)
   chatrooms?: Chatroom[]
 }
