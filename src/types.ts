@@ -35,6 +35,7 @@ export interface ServerToClientEvents {
   leave: (remoteId: string) => void
   remoteStartShare: (isScreenSharing: boolean) => void
   remoteStopShare: (isScreenSharing: boolean) => void
+  receiveMessage: (messageData: IMessageData) => void
 }
 export interface ClientToServerEvents {
   join: (roomId: string) => void
@@ -56,4 +57,15 @@ export interface ClientToServerEvents {
   hangup: (room: string, remoteId: string) => void
   remoteStartShare: (roomID: string, isScreenSharing: boolean) => void
   remoteStopShare: (roomID: string, isScreenSharing: boolean) => void
+  sendMessage: (messageData: IMessageData) => void
+}
+
+export interface IMessageData {
+  sender: {
+    id: string
+    userName: string
+    avatar: string
+  }
+  roomId: string
+  message: string
 }
