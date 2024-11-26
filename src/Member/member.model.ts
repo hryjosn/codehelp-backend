@@ -43,6 +43,5 @@ export const findMemberBy = async ({
 }) => {
   return Member.findOne({
     where: [{ id }, { userName }, { email }],
-    select: { password: false },
   })
 }

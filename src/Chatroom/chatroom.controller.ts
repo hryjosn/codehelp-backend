@@ -1,11 +1,6 @@
-import { Request, Response } from "express"
 import FeatureError from "~/utils/FeatureError"
 import { getInfo, getList, save, remove } from "./chatroom.feature"
-import { RESPONSE_CODE } from "~/types"
-
-interface IApi {
-  (req: Request, res: Response): void
-}
+import { IApi, RESPONSE_CODE } from "~/types"
 
 export const createChatroom: IApi = async (req, res) => {
   try {

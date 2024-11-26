@@ -1,17 +1,18 @@
-import FeatureError from "~/utils/FeatureError"
 import { IApi, RESPONSE_CODE } from "~/types"
-import { addMessage } from "./message.feature"
+import FeatureError from "~/utils/FeatureError"
+import { login } from "./user.feature"
 
-export const newMessage: IApi = async (req, res) => {
+export const loginController: IApi = async (req, res) => {
   try {
-    const { chatroomId } = req.params
-    const { userId, content } = req.body
-
-    const messageDetail = await addMessage({ chatroomId, userId, content })
+    const { email, password } = req.body
+    const { identity, user, token } = await login({ email, password })
 
     return res.status(200).send({
-      message: messageDetail,
-      status: "ok",
+      status: "user_login",
+      msg: "Login successful",
+      identity,
+      token,
+      user,
     })
   } catch (error) {
     if (error instanceof FeatureError) {

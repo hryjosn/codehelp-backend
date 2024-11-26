@@ -1,3 +1,5 @@
+import { Request, Response } from "express"
+
 export enum RESPONSE_CODE {
   VALIDATE_ERROR = "4001",
   USER_DATA_ERROR = "4002",
@@ -56,4 +58,8 @@ export interface ClientToServerEvents {
   hangup: (room: string, remoteId: string) => void
   remoteStartShare: (roomID: string, isScreenSharing: boolean) => void
   remoteStopShare: (roomID: string, isScreenSharing: boolean) => void
+}
+
+export interface IApi {
+  (req: Request, res: Response): void
 }
