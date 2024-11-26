@@ -8,6 +8,7 @@ const dataSource = new DataSource({
   synchronize: false,
   entities: [path.join(__dirname, "/entities/*{.ts,.js}")],
   migrations: [path.join(__dirname, "/migrations/*{.ts,.js}")],
+  migrationsRun: true,
   extra: {
     max: 1,
   },
