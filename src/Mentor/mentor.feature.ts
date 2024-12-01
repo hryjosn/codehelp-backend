@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt"
-import { IPagination, RESPONSE_CODE } from "~/types"
+import { RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
-import { addMentor, findMany, findMentorBy } from "./mentor.model"
-import { IMentorRequestBody } from "~/Mentor/types"
+import { addMentor, findManyAndCount, findMentorBy } from "./mentor.model"
+import { IKeywordPagination, IMentorRequestBody } from "~/Mentor/types"
 import { Mentor } from "~/db/entities/Mentor"
 import FeatureError from "~/utils/FeatureError"
 import { parseImageUrl, uploadFiles } from "~/utils/assetHelper"
@@ -62,10 +62,11 @@ export const getInfo = async ({ id }: { id: string }): Promise<Mentor> => {
 export const getList = async ({
   page,
   count,
-}: IPagination): Promise<{ mentorList: Mentor[]; total: number }> => {
+  keyword,
+}: IKeywordPagination): Promise<{ mentorList: Mentor[]; total: number }> => {
   try {
     const skip = (page - 1) * count
-    const [mentorList, total] = await findMany({ count, skip })
+    const [mentorList, total] = await findManyAndCount({ count, skip, keyword })
 
     return { mentorList, total }
   } catch (error) {

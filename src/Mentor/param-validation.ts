@@ -1,4 +1,5 @@
 import Joi from "joi"
+import { paginationSchema } from "~/utils/common-param-validation"
 import { countryCodes } from "~/utils/country"
 
 export const signUpSchema = Joi.object({
@@ -30,5 +31,13 @@ export const signUpSchema = Joi.object({
 export const getMentorInfoSchema = Joi.object({
   body: Joi.object().keys({
     id: Joi.string().uuid().required(),
+  }),
+})
+
+export const searchSchema = Joi.object({
+  body: Joi.object().keys({
+    keyword: Joi.string().min(1).max(30),
+    page: Joi.number().min(1).required(),
+    count: Joi.number().min(10).max(10).required(),
   }),
 })

@@ -1,3 +1,5 @@
+import { IPagination } from "~/types"
+
 export interface IMentor {
   userName: string
   email: string
@@ -26,4 +28,8 @@ export interface IMentorRequestBody extends IMentor {
 
 export interface IMentorModel extends IMentor {
   avatar: string
+}
+
+export interface IKeywordPagination extends IPagination {
+  keyword?: string
 }

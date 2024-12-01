@@ -61,10 +61,12 @@ export const getMentorInfo: IApi = async (req, res) => {
 
 export const getMentorList: IApi = async (req, res) => {
   try {
-    const { page, count } = req.query
+    const { page, count, keyword } = req.query
+
     const { mentorList, total } = await getList({
       page: Number(page),
       count: Number(count),
+      keyword: keyword?.toString(),
     })
 
     return res.status(200).send({

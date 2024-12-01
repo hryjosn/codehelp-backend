@@ -59,33 +59,45 @@ export const findMentorBy = async ({
   })
 }
 
-export const findMany = ({ count, skip }: { count: number; skip: number }) => {
-  return Mentor.findAndCount({
-    select: [
-      "id",
-      "userName",
-      "email",
-      "avatar",
-      "gender",
-      "country",
-      "title",
-      "company",
-      "experience",
-      "phoneNumber",
-      "emailOtp",
-      "introduction",
-      "level",
-      "url",
-      "primaryExpertise",
-      "secondaryExpertise",
-      "tertiaryExpertise",
-      "disciplines",
-      "skills",
-      "tools",
-      "createdAt",
-      "updatedAt",
-    ],
-    take: count,
-    skip: skip,
-  })
+export const findManyAndCount = async ({
+  count,
+  skip,
+  keyword,
+}: {
+  count: number
+  skip: number
+  keyword?: string
+}) => {
+  return Mentor.createQueryBuilder("mentor")
+    .where("mentor.user_name ILIKE COALESCE(:keyword, '%')", {
+      keyword: keyword && `%${keyword}%`,
+    })
+    .select([
+      "mentor.id",
+      "mentor.userName",
+      "mentor.avatar",
+      "mentor.email",
+      "mentor.gender",
+      "mentor.country",
+      "mentor.title",
+      "mentor.company",
+      "mentor.phoneNumber",
+      "mentor.introduction",
+      "mentor.level",
+      "mentor.url",
+      "mentor.primaryExpertise",
+      "mentor.secondaryExpertise",
+      "mentor.tertiaryExpertise",
+      "mentor.disciplines",
+      "mentor.skills",
+      "mentor.tools",
+      "mentor.createdAt",
+      "mentor.updatedAt",
+      "mentor.quickReply",
+      "mentor.experience",
+      "mentor.education",
+    ])
+    .take(count)
+    .skip(skip)
+    .getManyAndCount()
 }
