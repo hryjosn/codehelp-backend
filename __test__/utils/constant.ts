@@ -19,6 +19,7 @@ const MENTOR_DETAIL = {
   skills: ["123"],
   tools: ["123"],
   quickReply: false,
+  education: "高雄科技大學-海事資訊科技系",
 }
 
 export const MENTOR_ONE: IMentorModel = {
