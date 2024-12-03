@@ -160,7 +160,7 @@ describe("Mentor router POST: Mentor sign-up", () => {
   it("(x) Should return an error with response code 4001 when the pagination params is error.", async () => {
     const res = await request(server)
       .get("/mentor/list")
-      // missing count parameter
+      // Missing count parameter
       .query({ page: 1 })
 
     expect(res.status).toBe(422)
