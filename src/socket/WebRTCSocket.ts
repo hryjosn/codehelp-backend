@@ -19,12 +19,12 @@ export const WebRTCSocket = (
     socket.to(localId).emit("answer", desc, remoteId)
   })
 
-  socket.on("remoteStartShare", (room, isScreenSharing) => {
-    socket.to(room).emit("remoteStartShare", isScreenSharing)
+  socket.on("remoteStartShare", (room, remoteId) => {
+    socket.to(room).emit("remoteStartShare", remoteId)
   })
 
-  socket.on("remoteStopShare", (room, isScreenSharing) => {
-    socket.to(room).emit("remoteStopShare", isScreenSharing)
+  socket.on("remoteStopShare", (room, remoteId) => {
+    socket.to(room).emit("remoteStopShare", remoteId)
   })
 
   socket.on("ice_candidate", (data, remoteId, localId) => {

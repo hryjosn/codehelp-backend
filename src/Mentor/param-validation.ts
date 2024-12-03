@@ -24,6 +24,7 @@ export const signUpSchema = Joi.object({
     disciplines: Joi.array().required().min(1),
     skills: Joi.array().required().min(1),
     tools: Joi.array().required().min(1),
+    education: Joi.string().max(50).required(),
   }),
 })
 

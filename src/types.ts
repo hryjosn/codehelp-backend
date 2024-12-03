@@ -35,8 +35,8 @@ export interface ServerToClientEvents {
   ice_candidate: (data: IIce_candidate, remoteId: string) => void
   ready: (socketId: string, members: string[]) => void
   leave: (remoteId: string) => void
-  remoteStartShare: (isScreenSharing: boolean) => void
-  remoteStopShare: (isScreenSharing: boolean) => void
+  remoteStartShare: (remoteId: string) => void
+  remoteStopShare: (remoteId: string) => void
   receiveMessage: (messageData: IMessageData) => void
 }
 export interface ClientToServerEvents {
@@ -57,8 +57,8 @@ export interface ClientToServerEvents {
     localId: string,
   ) => void
   hangup: (room: string, remoteId: string) => void
-  remoteStartShare: (roomID: string, isScreenSharing: boolean) => void
-  remoteStopShare: (roomID: string, isScreenSharing: boolean) => void
+  remoteStartShare: (roomID: string, remoteId: string) => void
+  remoteStopShare: (roomID: string, remoteId: string) => void
   sendMessage: (messageData: IMessageData) => void
 }
 

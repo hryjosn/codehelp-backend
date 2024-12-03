@@ -1,13 +1,13 @@
+import bcrypt from "bcrypt"
 import bodyParser from "body-parser"
 import express, { Express } from "express"
-import request from "supertest"
-import { RESPONSE_CODE } from "~/types"
-import { DataBase } from "./utils/db.config"
-import mentorRouter from "~/Mentor/mentor.router"
 import path from "path"
+import request from "supertest"
 import { addMentor } from "~/Mentor/mentor.model"
-import bcrypt from "bcrypt"
+import mentorRouter from "~/Mentor/mentor.router"
+import { RESPONSE_CODE } from "~/types"
 import { MENTOR_ONE } from "./utils/constant"
+import { DataBase } from "./utils/db.config"
 
 let server: Express
 const DB = new DataBase()
@@ -28,6 +28,7 @@ const MENTOR_DATA = {
   primaryExpertise: "123",
   secondaryExpertise: "123",
   tertiaryExpertise: "123",
+  education: "高雄科技大學-海事資訊科技系",
 }
 
 beforeAll(async () => {
