@@ -95,6 +95,13 @@ export class Mentor extends BaseEntity {
   @Column("jsonb", { name: "experience", default: [] })
   experience?: object
 
+  @Column("character varying", {
+    name: "education",
+    length: 50,
+    default: () => "''",
+  })
+  education?: string
+
   @OneToMany(() => Chatroom, (chatroom) => chatroom.mentor)
   chatrooms?: Chatroom[]
 }
