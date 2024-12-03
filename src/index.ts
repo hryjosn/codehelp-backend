@@ -44,7 +44,7 @@ const init = async () => {
   const serverForSocket = http.createServer(server)
   const io = new Server(serverForSocket, {
     cors: {
-      origin: ["http://localhost:3000", "https://codehelp-web.vercel.app/"],
+      origin: ["http://localhost:3000", "https://codehelp-web.vercel.app"],
       methods: ["GET"],
     },
   })
