@@ -1,5 +1,4 @@
 import Joi from "joi"
-import { paginationSchema } from "~/utils/common-param-validation"
 import { countryCodes } from "~/utils/country"
 
 export const signUpSchema = Joi.object({

@@ -95,7 +95,6 @@ export const findManyAndCount = async ({
       "mentor.updatedAt",
       "mentor.quickReply",
       "mentor.experience",
-      "mentor.education",
     ])
     .take(count)
     .skip(skip)
