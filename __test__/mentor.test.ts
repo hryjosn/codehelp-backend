@@ -123,7 +123,7 @@ describe("Mentor router POST: Mentor sign-up", () => {
  *
  */
 
-describe("Mentor router POST: Mentor sign-up", () => {
+describe("Mentor router GET: Mentor List", () => {
   it("(o) Should return mentor list when requested successfully.", async () => {
     const res = await request(server)
       .get("/mentor/list")
