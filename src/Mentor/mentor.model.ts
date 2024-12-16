@@ -1,5 +1,5 @@
 import { Mentor } from "~/db/entities/Mentor"
-import { IMentorModel } from "./types"
+import { IMentorModel, IUpdateAvailableTime } from "./types"
 
 export const addMentor = async (data: IMentorModel) => {
   const {
@@ -101,4 +101,17 @@ export const findManyAndCount = async ({
     .take(count)
     .skip(skip)
     .getManyAndCount()
+}
+
+export const updateAvailableTime = ({
+  mentorId,
+  availableTime,
+}: IUpdateAvailableTime) => {
+  console.log(mentorId)
+
+  return Mentor.createQueryBuilder()
+    .update({ availableTime })
+    .where({ id: mentorId })
+    .returning(["id", "userName", "availableTime"])
+    .execute()
 }

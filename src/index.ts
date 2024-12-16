@@ -13,6 +13,7 @@ import dataSource from "./db/dataSource"
 import messageRouter from "./Message/message.router"
 import { WebRTCSocket } from "./socket/WebRTCSocket"
 import userRouter from "./User/user.router"
+import bookingRouter from "./Booking/booking.router"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -22,7 +23,7 @@ export const createServer = async () => {
   app.use(bodyParser.urlencoded({ extended: true }))
 
   app.use("/mentor", mentorRouter)
-  app.use("/member", memberRouter)
+  app.use("/member", [memberRouter, bookingRouter])
   app.use("/user", userRouter)
   app.use("/image", imageRouter)
   app.use("/chatroom", [chatroomRouter, messageRouter])

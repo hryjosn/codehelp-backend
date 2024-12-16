@@ -5,9 +5,16 @@ import {
   getMentorInfoSchema,
   searchSchema,
   signUpSchema,
+  updateAvailableTimeSchema,
 } from "./param-validation"
-import { getMentorInfo, getMentorList, signUp } from "./mentor.controller"
+import {
+  getMentorInfo,
+  getMentorList,
+  modifyAvailableTime,
+  signUp,
+} from "./mentor.controller"
 import { uploadFiles } from "~/middleware/file"
+import auth from "~/middleware/auth"
 
 const router = express.Router()
 
@@ -22,4 +29,9 @@ router
 router.route("/info/:id").get(validation(getMentorInfoSchema), getMentorInfo)
 
 router.route("/list").get(validation(searchSchema), getMentorList)
+
+router
+  .route("/updateAvailableTime")
+  .put(validation(updateAvailableTimeSchema), auth, modifyAvailableTime)
+
 export default router

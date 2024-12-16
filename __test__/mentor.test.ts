@@ -6,13 +6,27 @@ import request from "supertest"
 import { addMentor } from "~/Mentor/mentor.model"
 import mentorRouter from "~/Mentor/mentor.router"
 import { RESPONSE_CODE } from "~/types"
-import { MENTOR_ONE } from "./utils/constant"
+import { AVAILABLE_TIME, MENTOR_ONE } from "./utils/constant"
 import { DataBase } from "./utils/db.config"
+import { Mentor } from "~/db/entities/Mentor"
+import { generateToken } from "~/utils/account"
+import jwt from "jsonwebtoken"
 
 let server: Express
 const DB = new DataBase()
 const tokenStartWithBearer = /^Bearer/
-
+const NOT_EXISTS_ID = "09e7c567-05dd-4cb2-b789-df0344401f88"
+const NOT_EXISTS_TOKEN =
+  "Bearer " +
+  jwt.sign(
+    {
+      userName: "none",
+      email: "none",
+      id: NOT_EXISTS_ID,
+    },
+    String(process.env.TOKEN),
+    { expiresIn: "30 day" },
+  )
 const MENTOR_DATA = {
   userName: "testSignUpMentor",
   email: "testSignUpMentor@gmail.com",
@@ -31,6 +45,8 @@ const MENTOR_DATA = {
   education: "高雄科技大學-海事資訊科技系",
 }
 
+let mentor: Mentor
+let mentorToken: string
 beforeAll(async () => {
   try {
     await DB.setup()
@@ -42,10 +58,11 @@ beforeAll(async () => {
       }),
     )
     const encryptedMentorPassword = await bcrypt.hash(MENTOR_ONE.password, 10)
-    await addMentor({
+    mentor = await addMentor({
       ...MENTOR_ONE,
       password: encryptedMentorPassword,
     })
+    mentorToken = generateToken(mentor)
     server.use("/mentor", [mentorRouter])
   } catch (error) {
     console.log(error)
@@ -179,5 +196,66 @@ describe("Mentor router GET: Mentor List", () => {
  *  (o) Should return empty array when the keyword not found.
  *
  *  (x) Should return an error with response code 4001 when the pagination params is error.
+ *
+ */
+
+describe("Mentor router PUT: Update Mentor Available Time", () => {
+  it("(o) Should return mentor available time when requested successfully.", async () => {
+    const res = await request(server)
+      .put("/mentor/updateAvailableTime")
+      .send({
+        availableTime: AVAILABLE_TIME,
+      })
+      .set("Authorization", mentorToken)
+
+    expect(res.status).toBe(200)
+    expect(res.body.status).toBe("ok")
+    expect(res.body.id).toBe(mentor.id)
+    expect(res.body.userName).toBe(mentor.userName)
+    expect(res.body.availableTime).toBe(AVAILABLE_TIME)
+  })
+
+  it("(x) Should return an error with response code 4002 when the mentor is not exists.", async () => {
+    const res = await request(server)
+      .put("/mentor/updateAvailableTime")
+      .send({
+        availableTime: AVAILABLE_TIME,
+      })
+      .set("Authorization", NOT_EXISTS_TOKEN)
+
+    expect(res.status).toBe(401)
+    expect(res.body.code).toBe(RESPONSE_CODE.USER_DATA_ERROR)
+  })
+
+  it("(x) Should return an error with response code 4001 when the available time is incorrect.", async () => {
+    const res = await request(server)
+      .put("/mentor/updateAvailableTime")
+      .send({
+        //Missing endAt
+        availableTime: [
+          {
+            weekly: 1,
+            startAt: {
+              hours: 6,
+              minutes: 30,
+            },
+          },
+        ],
+      })
+      .set("Authorization", mentorToken)
+
+    expect(res.status).toBe(422)
+    expect(res.body.code).toBe(RESPONSE_CODE.VALIDATE_ERROR)
+  })
+})
+
+/*
+ *  [PUT] Update Mentor Available Time
+ *
+ *  (o) Should return mentor available time when requested successfully.
+ *
+ *  (x) Should return an error with response code 4002 when the mentor is not exists.
+ *
+ *  (x) Should return an error with response code 4001 when the data of available time is incorrect.
  *
  */

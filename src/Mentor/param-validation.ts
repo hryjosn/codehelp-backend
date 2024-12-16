@@ -41,3 +41,25 @@ export const searchSchema = Joi.object({
     count: Joi.number().min(10).max(10).required(),
   }),
 })
+
+const availableTimeItemSchema = Joi.object().keys({
+  weekly: Joi.number().min(1).max(7).required(),
+  startAt: Joi.object()
+    .keys({
+      hours: Joi.number().min(0).max(24).required(),
+      minutes: Joi.number().min(0).max(60).required(),
+    })
+    .required(),
+  endAt: Joi.object()
+    .keys({
+      hours: Joi.number().min(0).max(24).required(),
+      minutes: Joi.number().min(0).max(60).required(),
+    })
+    .required(),
+})
+
+export const updateAvailableTimeSchema = Joi.object({
+  body: Joi.object().keys({
+    availableTime: Joi.array().required().max(8).items(availableTimeItemSchema),
+  }),
+})

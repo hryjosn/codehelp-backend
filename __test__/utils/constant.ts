@@ -52,3 +52,28 @@ export const MEMBER: IMemberModel = {
   email: "member@gmail.com",
   ...MEMBER_DETAIL,
 }
+
+export const AVAILABLE_TIME = [
+  {
+    weekly: 1,
+    startAt: {
+      hours: 6,
+      minutes: 30,
+    },
+    endAt: {
+      hours: 19,
+      minutes: 30,
+    },
+  },
+  {
+    weekly: 2,
+    startAt: {
+      hours: 10,
+      minutes: 0,
+    },
+    endAt: {
+      hours: 15,
+      minutes: 30,
+    },
+  },
+]

@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, Index, OneToMany } from "typeorm"
+import { Booking } from "./Booking"
 import { Chatroom } from "./Chatroom"
 
 @Index("member_email_key", ["email"], { unique: true })
@@ -62,6 +63,9 @@ export class Member extends BaseEntity {
     default: () => "now()",
   })
   updatedAt?: Date
+
+  @OneToMany(() => Booking, (booking) => booking.member)
+  bookings?: Booking[]
 
   @OneToMany(() => Chatroom, (chatroom) => chatroom.member)
   chatrooms?: Chatroom[]

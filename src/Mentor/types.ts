@@ -34,3 +34,25 @@ export interface IMentorModel extends IMentor {
 export interface IKeywordPagination extends IPagination {
   keyword?: string
 }
+
+export type IAvailableTime = {
+  weekly: number
+  startAt: {
+    hours: number
+    minutes: number
+  }
+  endAt: {
+    hours: number
+    minutes: number
+  }
+}
+export interface IUpdateAvailableTime {
+  mentorId: string
+  availableTime: IAvailableTime[]
+}
+
+export interface IUpdateAvailableTimeResult {
+  id: string
+  user_name: string
+  available_time: IAvailableTime[]
+}

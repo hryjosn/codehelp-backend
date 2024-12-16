@@ -1,8 +1,18 @@
 import bcrypt from "bcrypt"
 import { RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
-import { addMentor, findManyAndCount, findMentorBy } from "./mentor.model"
-import { IKeywordPagination, IMentorRequestBody } from "~/Mentor/types"
+import {
+  addMentor,
+  findManyAndCount,
+  findMentorBy,
+  updateAvailableTime,
+} from "./mentor.model"
+import {
+  IKeywordPagination,
+  IMentorRequestBody,
+  IUpdateAvailableTime,
+  IUpdateAvailableTimeResult,
+} from "~/Mentor/types"
 import { Mentor } from "~/db/entities/Mentor"
 import FeatureError from "~/utils/FeatureError"
 import { parseImageUrl, uploadFiles } from "~/utils/assetHelper"
@@ -69,6 +79,25 @@ export const getList = async ({
     const [mentorList, total] = await findManyAndCount({ count, skip, keyword })
 
     return { mentorList, total }
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateMentorAvailableTime = async ({
+  mentorId,
+  availableTime,
+}: IUpdateAvailableTime): Promise<IUpdateAvailableTimeResult> => {
+  try {
+    const result = await updateAvailableTime({ mentorId, availableTime })
+    if (result.affected === 0) {
+      throw new FeatureError(
+        500,
+        RESPONSE_CODE.UNKNOWN_ERROR,
+        "The user or update target not found.",
+      )
+    }
+    return result.raw[0]
   } catch (error) {
     throw error
   }

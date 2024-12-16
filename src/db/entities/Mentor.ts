@@ -1,5 +1,7 @@
 import { BaseEntity, Column, Entity, Index, OneToMany } from "typeorm"
+import { Booking } from "./Booking"
 import { Chatroom } from "./Chatroom"
+import { IAvailableTime } from "~/Mentor/types"
 
 @Index("mentor_email_key", ["email"], { unique: true })
 @Index("mentor_pkey", ["id"], { unique: true })
@@ -101,6 +103,12 @@ export class Mentor extends BaseEntity {
     default: () => "''",
   })
   education?: string
+
+  @Column("jsonb", { name: "available_time", default: [] })
+  availableTime?: IAvailableTime[]
+
+  @OneToMany(() => Booking, (booking) => booking.mentor)
+  bookings?: Booking[]
 
   @OneToMany(() => Chatroom, (chatroom) => chatroom.mentor)
   chatrooms?: Chatroom[]
