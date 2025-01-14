@@ -1,7 +1,7 @@
 import { Member } from "~/db/entities/Member"
 import { IMemberModel } from "./types"
 
-export const addMember = async (data: IMemberModel) => {
+export const addMember = (data: IMemberModel) => {
   const {
     userName,
     password,
@@ -29,10 +29,10 @@ export const addMember = async (data: IMemberModel) => {
   newMember.introduction = introduction
   newMember.level = level
   newMember.fieldOfWork = fieldOfWork
-  return await newMember.save()
+  return newMember.save()
 }
 
-export const findMemberBy = async ({
+export const findMemberBy = ({
   id,
   email,
   userName,

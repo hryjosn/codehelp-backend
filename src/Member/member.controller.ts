@@ -21,7 +21,6 @@ export const signUp: IApi = async (req, res) => {
         code: RESPONSE_CODE.VALIDATE_ERROR,
         message: "Please upload an avatar",
       })
-      // TODO need to validate the parameters
     }
   } catch (error) {
     if (error instanceof FeatureError) {
